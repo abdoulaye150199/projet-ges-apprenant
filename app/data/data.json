@@ -1,0 +1,281 @@
+{
+    "users": [
+        {
+            "id": "1",
+            "name": "Abdoulaye Diallo",
+            "email": "diallo@gmail.com",
+            "password": "123456",
+            "profile": "Admin",
+            "image": "assets\/images\/tof2.png"
+        }
+    ],
+    "promotions": [
+        {
+            "id": 3,
+            "name": "Promo 3 R\u00e9f\u00e9rents Digital",
+            "status": "inactive",
+            "etat": "terminee",
+            "image": "cloud.jpg",
+            "date_debut": "2024-03-01",
+            "date_fin": "2025-02-28",
+            "apprenants": [
+                {
+                    "id": 6,
+                    "name": "David Lee"
+                },
+                {
+                    "id": 7,
+                    "name": "Emma Davis"
+                },
+                {
+                    "id": 8,
+                    "name": "Frank Miller"
+                }
+            ],
+            "referentiels": [
+                "1",
+                "68083304e5616"
+            ]
+        },
+        {
+            "name": "promo 7",
+            "date_debut": "2025-04-23",
+            "date_fin": "2025-04-24",
+            "image": "assets\/images\/tof1.Png",
+            "status": "active",
+            "etat": "en_cours",
+            "apprenants": [
+                {
+                    "id": "680f703cbb883",
+                    "name": "Sarada Uchiwa"
+                },
+                {
+                    "id": "681234c308687",
+                    "name": "Marie Uzumaki"
+                }
+            ],
+            "id": 19,
+            "referentiels": [
+                "680ff9ee7eada",
+                "680ff1b19aaec",
+                ""
+            ]
+        },
+        {
+            "name": "promotion 2016",
+            "date_debut": "2024-05-12",
+            "date_fin": "2024-06-14",
+            "image": "6809100a95bb5.png",
+            "status": "inactive",
+            "etat": "terminee",
+            "apprenants": [],
+            "id": 22
+        },
+        {
+            "name": "projet odc",
+            "date_debut": "2020-01-15",
+            "date_fin": "2027-01-12",
+            "image": "promotions\/680a338ca8c53_Capture_d_____cran_du_2025-03-04_11-15-56.png",
+            "apprenants": [],
+            "id": 25,
+            "status": "inactive",
+            "etat": "terminee"
+        },
+        {
+            "name": "projet odc1",
+            "date_debut": "2020-01-15",
+            "date_fin": "2027-01-12",
+            "image": "assets\/images\/uploads\/promotions\/cloud.jpg",
+            "status": "inactive",
+            "etat": "terminee",
+            "apprenants": [],
+            "id": 26
+        },
+        {
+            "name": "promo devops",
+            "date_debut": "2020-01-15",
+            "date_fin": "2027-01-12",
+            "image": "assets\/images\/uploads\/promotions\/680a603d07fb8.png",
+            "status": "inactive",
+            "etat": "terminee",
+            "apprenants": [],
+            "id": 29
+        },
+        {
+            "name": "promo aws ecsa",
+            "date_debut": "2020-01-15",
+            "date_fin": "2027-01-12",
+            "image": "public\/assets\/images\/uploads\/promotions\/680a6b1718e7a_photo.png",
+            "status": "inactive",
+            "etat": "terminee",
+            "apprenants": [],
+            "id": 31
+        },
+        {
+            "name": "Promo 5 ECSA",
+            "date_debut": "2023-08-12",
+            "date_fin": "2024-08-12",
+            "image": "assets\/images\/uploads\/promotions\/cloud.jpg",
+            "status": "inactive",
+            "apprenants": [],
+            "id": 34
+        },
+        {
+            "name": "E-commerce",
+            "date_debut": "2017-01-15",
+            "date_fin": "2018-04-14",
+            "image": "assets\/images\/uploads\/promotions\/.jpeg",
+            "status": "inactive",
+            "apprenants": [],
+            "id": 35
+        },
+        {
+            "name": "2026",
+            "date_debut": "15\/01\/2020",
+            "date_fin": "12\/02\/2021",
+            "image": "assets\/images\/uploads\/promotions\/data.png",
+            "referentiels": [
+                "1"
+            ],
+            "status": "inactive",
+            "apprenants": [],
+            "id": 36
+        },
+        {
+            "name": "Promo 6 ECSA",
+            "date_debut": "2023-08-12",
+            "date_fin": "2024-08-12",
+            "image": "\/assets\/images\/im1.jpg",
+            "referentiels": [
+                "1"
+            ],
+            "status": "inactive",
+            "apprenants": [],
+            "id": 37
+        },
+        {
+            "name": "Promo 5 ECSA",
+            "date_debut": "2000-12-08",
+            "date_fin": "2001-09-12",
+            "image": "\/assets\/images\/uploads\/promotions\/promotion_680ee1736c726.png",
+            "referentiels": [
+                "2",
+                "3",
+                "5",
+                "680e23e5f228e"
+            ],
+            "status": "inactive",
+            "apprenants": [],
+            "id": 38
+        }
+    ],
+    "referentiels": [
+        {
+            "id": "680ff1b19aaec",
+            "name": "Dev WEB\/mobile",
+            "description": "developpement application....",
+            "capacite": 50,
+            "sessions": 1,
+            "image": "assets\/images\/referentiels\/680ff1b19a67c.jpg",
+            "modules": []
+        },
+        {
+            "id": "680ff1f50ecfc",
+            "name": "R\u00e9f\u00e9rent DIGITAL",
+            "description": "Design UIUX, web design graphique design...",
+            "capacite": 50,
+            "sessions": 1,
+            "image": "assets\/images\/referentiels\/680ff1f50eb92.jpg",
+            "modules": []
+        },
+        {
+            "id": "680ff2176d805",
+            "name": "AWS",
+            "description": "Cloud ...",
+            "capacite": 25,
+            "sessions": 2,
+            "image": "assets\/images\/referentiels\/680ff2176d600.jpg",
+            "modules": []
+        },
+        {
+            "id": "680ff96d4731d",
+            "name": "Dev Data",
+            "description": "Base de donne",
+            "capacite": 25,
+            "sessions": 1,
+            "image": "assets\/images\/referentiels\/680ff96d4710a.jpg",
+            "modules": []
+        },
+        {
+            "id": "680ff9ee7eada",
+            "name": "Hackeuse",
+            "description": "Design graphique assistanat...",
+            "capacite": 25,
+            "sessions": 2,
+            "image": "assets\/images\/referentiels\/680ff9ee7e7c1.jpg",
+            "modules": []
+        }
+    ],
+    "apprenants": [
+        {
+            "id": "1",
+            "matricule": "ODC-2025-0001",
+            "prenom": "Boruto",
+            "nom": "Uzumaki",
+            "email": "boruto@example.com",
+            "password": "password123",
+            "telephone": "785993546",
+            "adresse": "Konoha",
+            "date_naissance": "2000-01-01",
+            "lieu_naissance": "Konoha",
+            "photo": "apprenants\/680fed1bcbf10.jpg",
+            "status": "actif",
+            "referentiel": "Dev WEB\/mobile",
+            "promotion_id": "1",
+            "created_at": "2024-01-01",
+            "referentiel_id": "680ff1b19aaec"
+        },
+        {
+            "id": "680f6c58cec59",
+            "matricule": "ODC-2025-0039",
+            "prenom": "Jin",
+            "nom": "Whu",
+            "email": "seydina.diop@exemple.com",
+            "telephone": "777777777",
+            "adresse": "medina",
+            "referentiel_id": "680ff1b19aaec",
+            "status": "actif",
+            "created_at": "2025-04-28 11:54:00",
+            "promotion_id": 23,
+            "photo": "apprenants\/680f924f3970c.png"
+        },
+        {
+            "id": "680f703cbb883",
+            "matricule": "ODC-2025-0046",
+            "prenom": "Sarada",
+            "nom": "Uchiwa",
+            "email": "layeprof221@gmail.com",
+            "telephone": "760000000",
+            "adresse": "Kohona",
+            "referentiel_id": "680ff1b19aaec",
+            "photo": "apprenants\/680fecfec0066.png",
+            "status": "actif",
+            "created_at": "2025-04-28 12:10:36",
+            "promotion_id": 19
+        },
+        {
+            "id": "681234c308687",
+            "matricule": "ODC-2025-0004",
+            "prenom": "Marie",
+            "nom": "Uzumaki",
+            "email": "layesdlc@gmail.com",
+            "telephone": "760000008",
+            "adresse": "medina",
+            "referentiel_id": null,
+            "photo": "apprenants\/681234c30860d.jpeg",
+            "status": "actif",
+            "created_at": "2025-04-30 14:33:39",
+            "promotion_id": 19
+        }
+    ]
+}
