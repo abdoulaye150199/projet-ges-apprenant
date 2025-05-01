@@ -51,17 +51,24 @@ function login_process() {
         return;
     }
 
-    // Tentative de connexion apprenant d'abord
-    $apprenant = $model['authenticate_apprenant']($login, $password);
-    if ($apprenant) {
+    // Tentative de connexion apprenant
+    $result = $model['authenticate_apprenant']($login, $password);
+    if ($result['success']) {
+        $apprenant = $result['data'];
+        // Stockage des données de session
         $session_services['set_session']('user', [
             'id' => $apprenant['id'],
             'matricule' => $apprenant['matricule'],
             'prenom' => $apprenant['prenom'],
             'nom' => $apprenant['nom'],
             'email' => $apprenant['email'],
+            'photo' => $apprenant['photo'] ?? null,
+            'referentiel_id' => $apprenant['referentiel_id'],
+            'profile' => 'Apprenant',
             'type' => 'apprenant'
         ]);
+        
+        // Redirection vers le profil apprenant
         redirect('?page=apprenant-profile');
         return;
     }

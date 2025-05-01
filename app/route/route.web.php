@@ -6,7 +6,7 @@ require_once __DIR__ . '/../controllers/auth.controller.php';
 require_once __DIR__ . '/../controllers/promotion.controller.php';
 require_once __DIR__ . '/../controllers/referentiel.controller.php';
 require_once __DIR__ . '/../controllers/dashboard.controller.php';
-require_once __DIR__ . '/../controllers/apprenant.controller.php'; // Ajout du controller apprenant
+require_once __DIR__ . '/../controllers/apprenant.controller.php';
 
 use App\Controllers;
 
@@ -29,7 +29,8 @@ $routes = [
     'add-promotion-process' => 'App\Controllers\add_promotion_process',
     'toggle-promotion-status' => 'App\Controllers\toggle_promotion_status',
     'promotion' => 'App\Controllers\promotion_page',
-    'add_promotion_form' => 'App\Controllers\add_promotion_form', // Fixed namespace
+    'add_promotion_form' => 'App\Controllers\add_promotion_form',
+    'search_referentiels' => 'App\Controllers\search_referentiels',
     
     // Routes pour les référentiels
     'referentiels' => 'App\Controllers\list_referentiels',
@@ -39,17 +40,10 @@ $routes = [
     'assign-referentiels' => 'App\Controllers\assign_referentiels_form',
     'assign-referentiels-process' => 'App\Controllers\assign_referentiels_process',
     'unassign-referentiel' => 'App\Controllers\unassign_referentiel_process',
-
     
     // Route par défaut pour le tableau de bord
     'dashboard' => 'App\Controllers\dashboard',
     
-    // Route pour les erreurs
-    'forbidden' => 'App\Controllers\forbidden',
-    
-    // Route par défaut (page non trouvée)
-    '404' => 'App\Controllers\not_found',  // Ajout de la virgule ici
-
     // Routes pour les apprenants
     'apprenants' => 'App\Controllers\list_apprenants',
     'add-apprenant' => 'App\Controllers\add_apprenant_form',
@@ -57,17 +51,16 @@ $routes = [
     'edit-apprenant' => 'App\Controllers\edit_apprenant_form',
     'edit-apprenant-process' => 'App\Controllers\edit_apprenant_process',
     'delete-apprenant' => 'App\Controllers\delete_apprenant_process',
-    
     'download-list' => 'App\Controllers\download_list',
-
     'apprenant-details' => 'App\Controllers\show_apprenant_details',
-
     'exclude-apprenant' => 'App\Controllers\exclude_apprenant',
-
     'import-apprenants' => 'App\Controllers\import_apprenants_form',
     'import-apprenants-process' => 'App\Controllers\import_apprenants_process',
-
     'apprenant-profile' => 'App\Controllers\show_apprenant_profile',
+    
+    // Route pour les erreurs
+    'forbidden' => 'App\Controllers\forbidden',
+    '404' => 'App\Controllers\not_found'
 ];
 
 /**

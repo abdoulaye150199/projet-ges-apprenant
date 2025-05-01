@@ -40,6 +40,29 @@
         </button>
     </div>
     
+    <div class="actions-group">
+        <!-- Pour le dropdown de téléchargement -->
+        <div class="dropdown">
+            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-download"></i> Télécharger la liste
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item pdf" href="?page=download-list&format=pdf">
+                        <i class="far fa-file-pdf"></i> PDF
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item excel" href="?page=download-list&format=excel">
+                        <i class="far fa-file-excel"></i> Excel
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Autres boutons... -->
+    </div>
+    
     <div class="cards-container">
         <?php if (empty($referentiels)): ?>
             <div class="no-data">Aucun référentiel n'est assigné à cette promotion</div>

@@ -180,3 +180,29 @@ $validator_services = [
         ];
     }
 ];
+
+function validate_import_data($data) {
+    $errors = [];
+    $required_fields = [
+        'prenom' => 'Prénom',
+        'nom' => 'Nom',
+        'email' => 'Email',
+        'telephone' => 'Téléphone',
+        'adresse' => 'Adresse',
+        'date_naissance' => 'Date de naissance',
+        'lieu_naissance' => 'Lieu de naissance',
+        'referentiel_id' => 'Référentiel'
+    ];
+
+    // Vérification des en-têtes requis
+    foreach ($required_fields as $field => $label) {
+        if (!in_array($field, array_keys($data[0]))) {
+            $errors[] = "La colonne '$label' est manquante";
+        }
+    }
+
+    return [
+        'valid' => empty($errors),
+        'errors' => $errors
+    ];
+}

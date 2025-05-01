@@ -112,15 +112,19 @@
                         <i class="fa-regular fa-bell"></i>
                     </div>
                     <div class="user-profile">
-                        <div class="user-info">
-                            <span class="user-name"><?= htmlspecialchars($_SESSION['user']['name']) ?></span>
-                            <span class="user-role"><?= htmlspecialchars($_SESSION['user']['profile']) ?></span>
-                        </div>
-                        <div class="avatar">
-                            <img src="<?= $_SESSION['user']['image'] ?? 'assets/images/tof1.png' ?>" 
-                                 alt="Photo de profil"
-                                 onerror="this.src='assets/images/mama.jpeg'">
-                        </div>
+                        <?php
+                        // Vérification de l'existence des données utilisateur
+                        $user = $user ?? null;
+                        $profile = $user['profile'] ?? 'Invité';
+                        $fullname = ($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '');
+                        ?>
+                        
+                        <span class="profile-text">
+                            <?= htmlspecialchars($fullname ?: 'Utilisateur') ?>
+                        </span>
+                        <span class="profile-type">
+                            <?= htmlspecialchars($profile) ?>
+                        </span>
                     </div>
                 </div>
             </header>

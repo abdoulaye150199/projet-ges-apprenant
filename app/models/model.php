@@ -589,10 +589,62 @@ $model = [
     
     return false;
 },
-'add_apprenant' => function($apprenant) use (&$model) {
-    $data = $model['read_data']();
-    $data['apprenants'][] = $apprenant;
-    return $model['write_data']($data);
+'add_apprenant' => function($apprenant_data) use (&$model) {
+    try {
+        $data = $model['read_data']();
+        
+        // Initialiser le tableau des apprenants s'il n'existe pas
+        if (!isset($data['apprenants'])) {
+            $data['apprenants'] = [];
+        }
+        
+        // Générer un ID unique
+        $apprenant_data['id'] = uniqid();
+        
+        // Générer un matricule unique
+        $year = date('Y');
+        $count = count($data['apprenants']) + 1;
+        $apprenant_data['matricule'] = sprintf("ODC-%d-%04d", $year, $count);
+        
+        // Vérifier le referentiel_id
+        if (!isset($apprenant_data['referentiel_id'])) {
+            throw new \Exception("Le referentiel_id est requis");
+        }
+        
+        // Générer un mot de passe temporaire
+        $temp_password = bin2hex(random_bytes(4));
+        $apprenant_data['password'] = password_hash($temp_password, PASSWORD_DEFAULT);
+        
+        // Ajouter les champs manquants
+        $apprenant_data['created_at'] = date('Y-m-d H:i:s');
+        $apprenant_data['status'] = 'actif';
+        
+        // Ajouter l'apprenant au tableau
+        $data['apprenants'][] = $apprenant_data;
+        
+        // Sauvegarder dans le fichier JSON
+        if ($model['write_data']($data)) {
+            // Charger le service mail
+            require_once __DIR__ . '/../services/mail.service.php';
+            
+            // Envoyer les identifiants par email
+            $mail_result = \App\Services\send_apprenant_credentials($apprenant_data, $temp_password);
+            
+            error_log('Résultat envoi mail: ' . ($mail_result ? 'Succès' : 'Échec'));
+            
+            return [
+                'success' => true,
+                'apprenant' => $apprenant_data,
+                'mail_sent' => $mail_result
+            ];
+        }
+        
+        return ['success' => false, 'message' => 'Erreur lors de la sauvegarde'];
+        
+    } catch (\Exception $e) {
+        error_log('Erreur add_apprenant: ' . $e->getMessage());
+        return ['success' => false, 'message' => $e->getMessage()];
+    }
 },
 'update_apprenant' => function($id, $updated_data) use (&$model) {
     $data = $model['read_data']();
@@ -779,22 +831,29 @@ $model = [
 },
 // Ajouter cette fonction dans le tableau $model
 'authenticate_apprenant' => function($login, $password) use (&$model) {
-    $data = $model['read_data']();
-    $apprenants = $data['apprenants'] ?? [];
-    
-    foreach ($apprenants as $apprenant) {
-        // Vérifier si le login correspond à l'email ou au matricule
-        if (($apprenant['email'] === $login || $apprenant['matricule'] === $login) 
-            && $apprenant['password'] === $password 
-            && $apprenant['status'] === 'actif') {
-            
-            // Ne pas renvoyer le mot de passe dans la session
-            unset($apprenant['password']);
-            return $apprenant;
+    try {
+        $data = $model['read_data']();
+        $apprenants = $data['apprenants'] ?? [];
+        
+        foreach ($apprenants as $apprenant) {
+            // Vérifier si le login correspond à l'email ou au matricule
+            if ($apprenant['email'] === $login || $apprenant['matricule'] === $login) {
+                // Vérifier le mot de passe
+                if (password_verify($password, $apprenant['password'])) {
+                    // Ne pas renvoyer le mot de passe
+                    $apprenant_data = $apprenant;
+                    unset($apprenant_data['password']);
+                    return ['success' => true, 'data' => $apprenant_data];
+                }
+            }
         }
+        
+        return ['success' => false, 'message' => 'Identifiants incorrects'];
+        
+    } catch (\Exception $e) {
+        error_log('Erreur authentication: ' . $e->getMessage());
+        return ['success' => false, 'message' => 'Erreur lors de l\'authentification'];
     }
-    
-    return false;
 },
 'get_apprenants_by_referentiel' => function($referentiel_id) use (&$model) {
     $data = $model['read_data']();

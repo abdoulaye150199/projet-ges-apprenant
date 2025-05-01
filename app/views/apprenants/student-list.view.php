@@ -1,7 +1,19 @@
 <div class="student-container">
     <div class="student-header">
-        <h2 class="app-title">Apprenants <span class="text-orange"><?= count($apprenants) ?> apprenants</span></h2>
+        <h2 class="app-title">Apprenants</h2>
         
+        <!-- Onglets -->
+        <div class="nav nav-tabs mb-4">
+            <a class="nav-link <?= $current_tab === 'retained' ? 'active' : '' ?>" 
+               href="?page=apprenants&tab=retained">
+                Apprenants retenus
+            </a>
+            <a class="nav-link <?= $current_tab === 'waiting' ? 'active' : '' ?>" 
+               href="?page=apprenants&tab=waiting">
+                Liste d'attente
+            </a>
+        </div>
+
         <div class="search-filters-container">
             <form action="" method="GET" id="filter-form">
                 <input type="hidden" name="page" value="apprenants">
@@ -38,21 +50,20 @@
                 </div>
             </form>
             <div class="actions-group">
-                <!-- Bouton de téléchargement existant -->
+                <!-- Pour le dropdown de téléchargement -->
                 <div class="dropdown">
-                    <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" 
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         <i class="fas fa-download"></i> Télécharger la liste
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="?page=download-list&format=pdf">
-                                <i class="far fa-file-pdf text-danger"></i> PDF
+                            <a class="dropdown-item pdf" href="?page=download-list&format=pdf">
+                                <i class="far fa-file-pdf"></i> PDF
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="?page=download-list&format=excel">
-                                <i class="far fa-file-excel text-success"></i> Excel
+                            <a class="dropdown-item excel" href="?page=download-list&format=excel">
+                                <i class="far fa-file-excel"></i> Excel
                             </a>
                         </li>
                     </ul>
@@ -95,7 +106,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($apprenants as $apprenant): ?>
+                        <?php foreach ($apprenants as $apprenant): 
+                            $missing_fields = [];
+                            if (empty($apprenant['prenom'])) $missing_fields[] = 'Prénom';
+                            if (empty($apprenant['nom'])) $missing_fields[] = 'Nom';
+                            if (empty($apprenant['email'])) $missing_fields[] = 'Email';
+                            if (empty($apprenant['telephone'])) $missing_fields[] = 'Téléphone';
+                            if (empty($apprenant['adresse'])) $missing_fields[] = 'Adresse';
+                            if (empty($apprenant['referentiel_id'])) $missing_fields[] = 'Référentiel';
+                        ?>
                         <tr>
                             <td>
                                 <img src="<?= !empty($apprenant['photo']) ? htmlspecialchars($apprenant['photo']) : 'assets/images/default-profile.png' ?>" 
@@ -148,21 +167,32 @@
                                 </span>
                             </td>
                             <td class="actions">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton<?= $apprenant['id'] ?>" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="dropdown actions">
+                                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton<?= $apprenant['id'] ?>">
-                                        <li>
-                                            <a class="dropdown-item" href="?page=apprenant-details&id=<?= $apprenant['id'] ?>">
-                                                <i class="fas fa-eye"></i> Voir détails
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="?page=edit-apprenant&id=<?= $apprenant['id'] ?>">
-                                                <i class="fas fa-edit"></i> Modifier
-                                            </a>
-                                        </li>
+                                    <ul class="dropdown-menu">
+                                        <?php if ($current_tab === 'waiting'): ?>
+                                            <li>
+                                                <a class="dropdown-item" href="?page=edit-apprenant&id=<?= $apprenant['id'] ?>">
+                                                    <i class="fas fa-edit"></i> Compléter le profil
+                                                    <small class="text-danger d-block">
+                                                        Informations manquantes : <?= implode(', ', $missing_fields) ?>
+                                                    </small>
+                                                </a>
+                                            </li>
+                                        <?php else: ?>
+                                            <li>
+                                                <a class="dropdown-item" href="?page=apprenant-details&id=<?= $apprenant['id'] ?>">
+                                                    <i class="fas fa-eye"></i> Voir détails
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="?page=edit-apprenant&id=<?= $apprenant['id'] ?>">
+                                                    <i class="fas fa-edit"></i> Modifier
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>

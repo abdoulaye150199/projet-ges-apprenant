@@ -1,42 +1,36 @@
-<div class="student-details">
+<div class="import-container">
     <div class="card">
-        <div class="header-section">
-            <div class="actions-top">
-                <a href="?page=apprenants" class="back-button">
-                    <i class="fas fa-arrow-left"></i> Retour
+        <div class="card-header">
+            <h2>Importer des apprenants</h2>
+        </div>
+        <div class="card-body">
+            <div class="template-download">
+                <p>Téléchargez le modèle de fichier Excel et remplissez-le avec vos données :</p>
+                <a href="?page=download-template" class="btn btn-secondary">
+                    <i class="fas fa-file-excel"></i> Télécharger le modèle Excel
                 </a>
             </div>
-            <h2 class="import-title">Importer des apprenants</h2>
-        </div>
-        
-        <div class="import-section">
+
             <form action="?page=import-apprenants-process" method="POST" enctype="multipart/form-data">
-                <div class="upload-zone">
-                    <i class="fas fa-file-excel"></i>
-                    <p>Déposez votre fichier Excel ici ou</p>
-                    <label class="upload-btn">
-                        Choisir un fichier
-                        <input type="file" name="excel_file" accept=".xlsx,.xls" required>
-                    </label>
-                    <p class="file-info">Formats acceptés: .xlsx, .xls</p>
-                </div>
-
-                <?php if (isset($import_errors) && !empty($import_errors)): ?>
-                    <div class="alert alert-danger mt-3">
-                        <h5><i class="fas fa-exclamation-triangle"></i> Erreurs d'importation:</h5>
-                        <ul>
-                            <?php foreach ($import_errors as $error): ?>
-                                <li><?= htmlspecialchars($error) ?></li>
-                            <?php endforeach; ?>
-                        </ul>
+                <div class="form-group">
+                    <label for="file">Sélectionnez votre fichier Excel</label>
+                    <div class="file-upload-wrapper">
+                        <div class="file-upload-message">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Glissez-déposez votre fichier ici ou cliquez pour sélectionner</p>
+                        </div>
+                        <input type="file" 
+                               name="file" 
+                               id="file" 
+                               class="custom-file-input" 
+                               accept=".xlsx,.xls" 
+                               required>
                     </div>
-                <?php endif; ?>
-
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-success" >
-                        <i class="fas fa-upload"></i> Importer
-                    </button>
+                    <small class="form-text">Formats acceptés : .xlsx, .xls</small>
                 </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-upload"></i> Importer
+                </button>
             </form>
         </div>
     </div>

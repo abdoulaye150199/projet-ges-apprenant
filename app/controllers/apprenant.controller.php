@@ -25,42 +25,44 @@ function list_apprenants() {
         // Paramètres de pagination et filtres
         $current_page = isset($_GET['page_num']) ? (int)$_GET['page_num'] : 1;
         $items_per_page = isset($_GET['items_per_page']) ? (int)$_GET['items_per_page'] : 10;
-        
-        // Récupérer les filtres depuis l'URL
         $search = $_GET['search'] ?? '';
         $referentiel_filter = $_GET['referentiel'] ?? '';
         $status_filter = $_GET['status'] ?? '';
+        $tab = $_GET['tab'] ?? 'retained'; // 'retained' ou 'waiting'
 
         // Récupérer les données
         $apprenants = $model['get_all_apprenants']();
         $referentiels = $model['get_all_referentiels']();
-        
-        // Récupérer le référentiel sélectionné
-        $selected_referentiel = null;
-        if (!empty($referentiel_filter)) {
-            foreach ($referentiels as $ref) {
-                if ($ref['id'] === $referentiel_filter) {
-                    $selected_referentiel = $ref;
-                    break;
+
+        // Vérifier si les informations sont complètes
+        function hasIncompleteInfo($apprenant) {
+            $required_fields = ['prenom', 'nom', 'email', 'telephone', 'adresse', 'referentiel_id'];
+            foreach ($required_fields as $field) {
+                if (empty($apprenant[$field])) {
+                    return true;
                 }
             }
+            return false;
         }
 
-        // Filtrage des apprenants
+        // Filtrer les apprenants selon le tab
+        $apprenants = array_filter($apprenants, function($apprenant) use ($tab) {
+            $isComplete = !hasIncompleteInfo($apprenant);
+            return $tab === 'retained' ? $isComplete : !$isComplete;
+        });
+
+        // Appliquer les autres filtres
         $filtered_apprenants = array_filter($apprenants, function($apprenant) use ($search, $referentiel_filter, $status_filter) {
             $matches = true;
             
-            // Filtre par référentiel
             if (!empty($referentiel_filter)) {
-                $matches = $matches && (isset($apprenant['referentiel_id']) && $apprenant['referentiel_id'] === $referentiel_filter);
+                $matches = $matches && ($apprenant['referentiel_id'] === $referentiel_filter);
             }
             
-            // Filtre par statut
             if (!empty($status_filter)) {
-                $matches = $matches && (isset($apprenant['status']) && $apprenant['status'] === $status_filter);
+                $matches = $matches && ($apprenant['status'] === $status_filter);
             }
             
-            // Filtre par recherche
             if (!empty($search)) {
                 $search_lower = strtolower($search);
                 $full_name = strtolower($apprenant['prenom'] . ' ' . $apprenant['nom']);
@@ -74,24 +76,19 @@ function list_apprenants() {
             return $matches;
         });
 
-        // Réindexer le tableau après filtrage
-        $filtered_apprenants = array_values($filtered_apprenants);
-        
-        // Calcul de la pagination
+        // Pagination
         $total_items = count($filtered_apprenants);
         $total_pages = max(1, ceil($total_items / $items_per_page));
         $current_page = max(1, min($current_page, $total_pages));
         $start = ($current_page - 1) * $items_per_page;
         $end = min($start + $items_per_page, $total_items);
         
-        // Extraire les éléments de la page courante
         $paginated_apprenants = array_slice($filtered_apprenants, $start, $items_per_page);
 
-        // Render avec toutes les données nécessaires
         render('admin.layout.view.php', 'apprenants/student-list.view.php', [
             'apprenants' => $paginated_apprenants,
             'referentiels' => $referentiels,
-            'selected_referentiel' => $selected_referentiel,
+            'current_tab' => $tab,
             'filters' => [
                 'search' => $search,
                 'referentiel' => $referentiel_filter,
@@ -152,78 +149,48 @@ function add_apprenant_form() {
 }
 
 function add_apprenant_process() {
-    global $model, $session_services, $file_services, $mail_services;
+    global $model, $validator_services, $session_services;
     
     try {
-        check_auth();
-        
-        // Vérifier si une promotion est active et en cours
-        $current_promotion = $model['get_current_promotion']();
-        if (!$current_promotion || $current_promotion['etat'] !== 'en_cours') {
-            $session_services['set_flash_message']('error', 
-                'Impossible d\'ajouter un apprenant. Aucune promotion active en cours.'
-            );
-            redirect('?page=apprenants');
-            return;
-        }
-
-        // Validation des données
-        $email = htmlspecialchars($_POST['email']);
-        $telephone = htmlspecialchars($_POST['telephone']);
-        
-        // Vérification des doublons
-        if ($model['check_apprenant_exists']($email, $telephone)) {
-            $session_services['set_flash_message']('error', 'Un apprenant avec cet email ou ce numéro de téléphone existe déjà');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             redirect('?page=add-apprenant');
             return;
         }
-        
-        // Traitement de l'image
-        $image_path = '';
-        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-            $image_path = $file_services['handle_upload']($_FILES['photo'], 'apprenants');
-            if (!$image_path) {
-                $session_services['set_flash_message']('error', 'Erreur lors du téléchargement de l\'image');
-                redirect('?page=add-apprenant');
-                return;
-            }
-        }
 
-        // Préparation des données avec la promotion active
         $apprenant_data = [
-            'id' => uniqid(),
-            'matricule' => $model['generate_matricule'](),
-            'prenom' => htmlspecialchars($_POST['prenom']),
-            'nom' => htmlspecialchars($_POST['nom']),
-            'email' => htmlspecialchars($_POST['email']),
-            'telephone' => htmlspecialchars($_POST['telephone']),
-            'adresse' => htmlspecialchars($_POST['adresse']),
-            'referentiel_id' => $_POST['referentiel_id'],
-            'photo' => $image_path,
-            'status' => 'actif',
-            'created_at' => date('Y-m-d H:i:s'),
-            'promotion_id' => $current_promotion['id'] // Ajout de l'ID de la promotion active
+            'prenom' => $_POST['prenom'] ?? '',
+            'nom' => $_POST['nom'] ?? '',
+            'email' => $_POST['email'] ?? '',
+            'telephone' => $_POST['telephone'] ?? '',
+            'adresse' => $_POST['adresse'] ?? '',
+            'date_naissance' => $_POST['date_naissance'] ?? '',
+            'lieu_naissance' => $_POST['lieu_naissance'] ?? '',
+            'referentiel_id' => $_POST['referentiel_id'] ?? '' // Changé de 'referentiel' à 'referentiel_id'
         ];
 
+        // Validation avec les fichiers optionnels
+        $validation_result = validate_apprenant_data($apprenant_data, $_FILES);
+        
+        if (!$validation_result['valid']) {
+            $session_services['set_flash_message']('error', implode('<br>', $validation_result['errors']));
+            redirect('?page=add-apprenant');
+            return;
+        }
+
         // Ajout de l'apprenant
-        if ($model['add_apprenant']($apprenant_data)) {
-            // Mise à jour de la promotion
-            $model['add_apprenant_to_promotion']($current_promotion['id'], $apprenant_data['id']);
-            
-            // Envoi de l'email de confirmation
-            if ($mail_services['send_welcome_email']($apprenant_data)) {
-                $session_services['set_flash_message']('success', 
-                    'Apprenant ajouté avec succès. Un email de confirmation a été envoyé.'
-                );
+        $result = $model['add_apprenant']($apprenant_data);
+
+        if ($result['success']) {
+            $message = 'Apprenant ajouté avec succès';
+            if ($result['mail_sent']) {
+                $message .= ' et les identifiants ont été envoyés par email';
             } else {
-                $session_services['set_flash_message']('warning', 
-                    'Apprenant ajouté avec succès mais l\'email n\'a pas pu être envoyé.'
-                );
+                $message .= ' mais l\'envoi du mail a échoué';
             }
-            
+            $session_services['set_flash_message']('success', $message);
             redirect('?page=apprenants');
         } else {
-            $session_services['set_flash_message']('error', 'Erreur lors de l\'ajout de l\'apprenant');
+            $session_services['set_flash_message']('error', $result['message']);
             redirect('?page=add-apprenant');
         }
 
@@ -234,7 +201,7 @@ function add_apprenant_process() {
 }
 
 // Fonction helper pour la validation
-function validate_apprenant_data($post_data, $files) {
+function validate_apprenant_data($post_data, $files = null) {
     $errors = [];
     
     // Validation des champs requis
@@ -258,6 +225,38 @@ function validate_apprenant_data($post_data, $files) {
     return [
         'valid' => empty($errors),
         'errors' => $errors
+    ];
+}
+
+function validate_import_data($row) {
+    $errors = [];
+    $missing_fields = [];
+    $required_fields = [
+        'prenom', 'nom', 'email', 'telephone', 'referentiel_id',
+        'adresse', 'date_naissance', 'lieu_naissance'
+    ];
+
+    // Vérifier les champs requis
+    foreach ($required_fields as $index => $field) {
+        if (empty($row[$index])) {
+            $missing_fields[] = $field;
+        }
+    }
+
+    // Validation des champs présents
+    if (!empty($row[2]) && !filter_var($row[2], FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "L'email n'est pas valide";
+    }
+
+    if (!empty($row[3]) && !preg_match("/^(77|78|75|70|76)[0-9]{7}$/", $row[3])) {
+        $errors[] = "Le numéro de téléphone n'est pas au format valide";
+    }
+
+    return [
+        'valid' => empty($errors) && empty($missing_fields),
+        'errors' => $errors,
+        'missing_fields' => $missing_fields,
+        'incomplete' => !empty($missing_fields)
     ];
 }
 
@@ -487,7 +486,40 @@ function import_apprenants_form() {
     
     try {
         check_auth();
-        render('admin.layout.view.php', 'apprenants/import-apprenants.view.php');
+        render('admin.layout.view.php', 'apprenants/import-apprenants.view.php', [
+            'import_ui' => '
+                <div class="import-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Importer des apprenants</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="template-download mb-4">
+                                <p>Téléchargez le modèle de fichier CSV et remplissez-le avec vos données :</p>
+                                <a href="?page=download-template" class="btn btn-secondary">
+                                    <i class="fas fa-download"></i> Télécharger le modèle
+                                </a>
+                            </div>
+
+                            <form action="?page=import-apprenants-process" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="file">Fichier CSV</label>
+                                    <input type="file" 
+                                           name="file" 
+                                           id="file" 
+                                           class="form-control" 
+                                           accept=".csv" 
+                                           required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-upload"></i> Importer
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            '
+        ]);
     } catch (Exception $e) {
         $session_services['set_flash_message']('error', 'Une erreur est survenue');
         redirect('?page=apprenants');
@@ -499,78 +531,109 @@ function import_apprenants_process() {
     
     try {
         check_auth();
-        
-        if (!isset($_FILES['excel_file']) || $_FILES['excel_file']['error'] !== UPLOAD_ERR_OK) {
-            $session_services['set_flash_message']('error', 'Veuillez sélectionner un fichier Excel valide');
-            redirect('?page=import-apprenants');
-            return;
+
+        if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+            throw new \Exception('Veuillez sélectionner un fichier Excel valide');
         }
 
-        // Use the correct path to autoload.php
-        require __DIR__ . '/../../vendor/autoload.php';
+        require_once __DIR__ . '/../services/import.service.php';
+        $data = \App\Services\import_excel_data($_FILES['file']);
+
+        // Ignorer la première ligne (en-têtes)
+        array_shift($data);
         
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($_FILES['excel_file']['tmp_name']);
-        $worksheet = $spreadsheet->getActiveSheet();
-        $rows = $worksheet->toArray();
-        
-        // Enlever l'en-tête
-        array_shift($rows);
-        
-        $import_errors = [];
-        $success_count = 0;
-        
-        foreach ($rows as $index => $row) {
-            $email = $row[2];
-            $telephone = $row[3];
-            
-            // Vérifier si l'apprenant existe déjà
-            if ($model['check_apprenant_exists']($email, $telephone)) {
-                $import_errors[] = "Ligne " . ($index + 2) . ": Un apprenant avec cet email ($email) ou ce téléphone ($telephone) existe déjà";
-                continue;
-            }
-            
-            // Get current promotion
-            $current_promotion = $model['get_current_promotion']();
-            if (!$current_promotion) {
-                $import_errors[] = "Ligne " . ($index + 2) . ": Aucune promotion active";
-                continue;
-            }
-            
-            // Créer l'apprenant with default referentiel_id
-            $apprenant_data = [
-                'id' => uniqid(),
-                'matricule' => $model['generate_matricule'](),
-                'prenom' => $row[0],
-                'nom' => $row[1],
-                'email' => $email,
-                'telephone' => $telephone,
-                'adresse' => $row[4],
-                'referentiel_id' => null, // Set default referentiel_id
-                'status' => 'actif',
-                'created_at' => date('Y-m-d H:i:s'),
-                'promotion_id' => $current_promotion['id']
-            ];
-            
-            if ($model['add_apprenant']($apprenant_data)) {
-                $success_count++;
-            } else {
-                $import_errors[] = "Ligne " . ($index + 2) . ": Erreur lors de l'ajout de l'apprenant";
+        $success_retained = 0;
+        $success_waiting = 0;
+        $errors = [];
+        $existing_emails = [];
+        $existing_phones = [];
+
+        foreach ($data as $index => $row) {
+            if (array_filter($row)) { // Ignorer les lignes vides
+                try {
+                    $validation = validate_import_data($row);
+                    $is_duplicate = false;
+
+                    // Vérifier les doublons pour l'email s'il existe
+                    if (!empty($row[2])) {
+                        if (in_array($row[2], $existing_emails) || $model['check_apprenant_exists']($row[2], null)) {
+                            $errors[] = "Ligne " . ($index + 2) . " : Email déjà utilisé";
+                            $is_duplicate = true;
+                        }
+                        $existing_emails[] = $row[2];
+                    }
+
+                    // Vérifier les doublons pour le téléphone s'il existe
+                    if (!empty($row[3])) {
+                        if (in_array($row[3], $existing_phones) || $model['check_apprenant_exists'](null, $row[3])) {
+                            $errors[] = "Ligne " . ($index + 2) . " : Téléphone déjà utilisé";
+                            $is_duplicate = true;
+                        }
+                        $existing_phones[] = $row[3];
+                    }
+
+                    // Préparer les données de l'apprenant
+                    $apprenant_data = [
+                        'prenom' => $row[0] ?? '',
+                        'nom' => $row[1] ?? '',
+                        'email' => $row[2] ?? '',
+                        'telephone' => $row[3] ?? '',
+                        'adresse' => $row[4] ?? '',
+                        'date_naissance' => $row[5] ?? '',
+                        'lieu_naissance' => $row[6] ?? '',
+                        'referentiel_id' => $row[7] ?? '',
+                        'status' => 'en_attente',
+                        'imported_data' => array_filter($row), // Sauvegarder les données importées
+                        'missing_fields' => $validation['missing_fields'] // Sauvegarder les champs manquants
+                    ];
+
+                    if (!$is_duplicate) {
+                        if ($validation['valid']) {
+                            // Apprenant complet -> liste retenue
+                            $apprenant_data['status'] = 'actif';
+                            $result = $model['add_apprenant']($apprenant_data);
+                            if ($result['success']) {
+                                $success_retained++;
+                            }
+                        } else {
+                            // Apprenant incomplet -> liste d'attente
+                            $result = $model['add_apprenant']($apprenant_data);
+                            if ($result['success']) {
+                                $success_waiting++;
+                                $missing = implode(', ', $validation['missing_fields']);
+                                $errors[] = "Ligne " . ($index + 2) . " : En attente - Champs manquants : " . $missing;
+                            }
+                        }
+                    }
+
+                } catch (\Exception $e) {
+                    $errors[] = "Ligne " . ($index + 2) . " : " . $e->getMessage();
+                }
             }
         }
-        
-        if (empty($import_errors)) {
-            $session_services['set_flash_message']('success', "$success_count apprenants importés avec succès");
-            redirect('?page=apprenants');
-        } else {
-            render('admin.layout.view.php', 'apprenants/import-apprenants.view.php', [
-                'import_errors' => $import_errors
-            ]);
+
+        // Message de résultat
+        $message = [];
+        if ($success_retained > 0) {
+            $message[] = "$success_retained apprenants ajoutés à la liste des retenus";
+        }
+        if ($success_waiting > 0) {
+            $message[] = "$success_waiting apprenants ajoutés à la liste d'attente";
         }
         
-    } catch (Exception $e) {
-        $session_services['set_flash_message']('error', 'Une erreur est survenue lors de l\'importation');
-        redirect('?page=import-apprenants');
+        if (!empty($message)) {
+            $session_services['set_flash_message']('success', implode(', ', $message));
+        }
+        
+        if (!empty($errors)) {
+            $session_services['set_flash_message']('warning', implode('<br>', $errors));
+        }
+
+    } catch (\Exception $e) {
+        $session_services['set_flash_message']('error', $e->getMessage());
     }
+    
+    redirect('?page=import-apprenants');
 }
 
 function delete_apprenant_process() {
@@ -610,5 +673,30 @@ function delete_apprenant_process() {
     } catch (\Exception $e) {
         $session_services['set_flash_message']('error', $e->getMessage());
         redirect('?page=apprenants');
+    }
+}
+
+function download_template() {
+    try {
+        require_once __DIR__ . '/../../vendor/autoload.php';
+        require_once __DIR__ . '/../services/excel.service.php';
+        
+        // Générer le template
+        $spreadsheet = \App\Services\generate_excel_template();
+        
+        // Headers pour le téléchargement
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="modele_import_apprenants.xlsx"');
+        header('Cache-Control: max-age=0');
+        header('Expires: 0');
+        
+        // Créer le writer et envoyer le fichier
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $writer->save('php://output');
+        exit;
+        
+    } catch (\Exception $e) {
+        error_log('Erreur lors de la génération du template: ' . $e->getMessage());
+        redirect('?page=import-apprenants');
     }
 }

@@ -1,0 +1,337 @@
+:root {
+  /* Colors */
+  --primary: #1d8f0e;
+  --primary-dark: #0c7a6a;
+  --secondary: #f97426;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --bg-light: #f8fafc;
+  --bg-white: #ffffff;
+  --border-color: #e5e7eb;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+
+  /* Spacing */
+  --spacing-xs: 5px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+
+  /* Orange Colors */
+  --orange-primary: #ff7900;
+  --orange-secondary: #e65c00;
+  --orange-light: rgba(255, 121, 0, 0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+/* Header styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.header h1 {
+  color: var(--primary);
+  font-size: 24px;
+  margin-bottom: var(--spacing-xs);
+  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-back {
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  background: var(--bg-light);
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: #f1f5f9;
+  transform: translateX(-2px);
+}
+
+/* Search section */
+.search-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.search-bar {
+  position: relative;
+  max-width: 600px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.search-bar input {
+  width: 100%;
+  padding: var(--spacing-md) 40px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  background: var(--bg-white);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(14, 143, 126, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+/* Cards container */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Card styles */
+.card {
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-image {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+.card-content {
+  padding: var(--spacing-md);
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.card-subtitle {
+  color: var(--primary);
+  font-size: 14px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.card-description {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Checkbox styles */
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-color);
+}
+
+.form-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--primary);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-check label {
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--spacing-xl);
+}
+
+.btn-teal {
+  background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+  color: var(--bg-white);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(14, 143, 126, 0.2);
+}
+
+.btn-teal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(14, 143, 126, 0.3);
+}
+
+.no-data {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--text-secondary);
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  grid-column: 1 / -1;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Style pour les badges de référentiel */
+.referentiel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 20px;
+  font-size: 14px;
+  margin: var(--spacing-xs);
+  border: 1px solid var(--orange-primary);
+  background: var(--bg-white);
+  color: var(--orange-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.referentiel-badge:hover {
+  background: var(--orange-light);
+}
+
+.referentiel-badge .close-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--orange-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.referentiel-badge:hover .close-icon {
+  background: var(--orange-primary);
+  color: white;
+}
+
+/* Style pour le conteneur des référentiels */
+.referentiels-container {
+  border: 2px solid var(--orange-primary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  background: var(--bg-white);
+  box-shadow: 0 2px 8px var(--orange-light);
+}
+
+/* Style pour le bouton Terminer */
+.btn-terminer {
+  background: linear-gradient(
+    45deg,
+    var(--orange-primary),
+    var(--orange-secondary)
+  );
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(255, 121, 0, 0.2);
+}
+
+.btn-terminer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 121, 0, 0.3);
+}
+
+/* Style pour le select des référentiels */
+.referentiel-select {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--orange-primary);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-white);
+  transition: all 0.3s ease;
+}
+
+.referentiel-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--orange-light);
+}
+
+/* Style pour le bouton Ajouter */
+.btn-ajouter {
+  background: var(--orange-primary);
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-ajouter:hover {
+  background: var(--orange-secondary);
+}

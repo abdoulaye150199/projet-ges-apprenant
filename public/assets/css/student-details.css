@@ -1,0 +1,259 @@
+/* Base styles */
+.apd-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.apd-main-content {
+    display: flex;
+    gap: 20px;
+}
+
+/* Sidebar styling */
+.apd-sidebar {
+    flex: 0 0 300px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.apd-profile-card {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.apd-profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    border: 3px solid #23a094;
+    overflow: hidden;
+}
+
+.apd-profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.apd-profile-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.apd-profile-matricule {
+    background-color: #23a094;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.apd-contact-info {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.apd-contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #666;
+}
+
+.apd-contact-item i {
+    width: 20px;
+    margin-right: 10px;
+    color: #23a094;
+}
+
+/* Dashboard content */
+.apd-dashboard {
+    flex: 1;
+}
+
+.apd-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.apd-stat-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+}
+
+.apd-stat-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.2rem;
+}
+
+.apd-stat-icon.green { background-color: #e6f7f5; color: #23a094; }
+.apd-stat-icon.orange { background-color: #fff2e6; color: #ff9f43; }
+.apd-stat-icon.red { background-color: #ffe6e6; color: #ea5455; }
+
+.apd-stat-info .apd-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.apd-stat-info .apd-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Modules grid */
+.apd-modules-section {
+    margin-top: 30px;
+}
+
+.apd-section-title {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.apd-modules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.apd-module-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.apd-module-status {
+    background-color: #333;
+    color: white;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+.apd-module-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.apd-module-formateur {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.apd-progress-bar {
+    height: 4px;
+    background-color: #eee;
+    border-radius: 2px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.apd-progress-fill {
+    height: 100%;
+    background-color: #23a094;
+}
+
+.apd-module-meta {
+    display: flex;
+    gap: 12px;
+}
+
+.apd-meta-item {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.apd-meta-item i {
+    margin-right: 6px;
+    color: #23a094;
+}
+
+/* Ajout des styles pour les badges de statut et référentiel */
+.apd-status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.apd-status-badge.actif { background-color: #28a745; color: white; }
+.apd-status-badge.exclu { background-color: #dc3545; color: white; }
+.apd-status-badge.inactif { background-color: #6c757d; color: white; }
+
+.apd-referentiel-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.apd-referentiel-badge.dev-web { background-color: #007bff; color: white; }
+.apd-referentiel-badge.ref-dig { background-color: #6610f2; color: white; }
+.apd-referentiel-badge.dev-data { background-color: #17a2b8; color: white; }
+.apd-referentiel-badge.aws { background-color: #fd7e14; color: white; }
+.apd-referentiel-badge.hackeuse { background-color: #e83e8c; color: white; }
+
+/* Style pour la carte de promotion */
+.apd-promotion-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.apd-promotion-card h3 {
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.apd-promotion-info h4 {
+    color: #23a094;
+    margin-bottom: 10px;
+}
+
+.apd-promotion-dates {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 0.9rem;
+}

@@ -73,6 +73,18 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label for="referentiel_id">Référentiel</label>
+                    <select name="referentiel_id" id="referentiel_id" class="form-control" required>
+                        <option value="">Sélectionnez un référentiel</option>
+                        <?php foreach ($referentiels as $referentiel): ?>
+                            <option value="<?= htmlspecialchars($referentiel['id']) ?>">
+                                <?= htmlspecialchars($referentiel['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
                 <!-- Informations du tuteur -->
                 <div class="section-title mb-4">
                     <h4 class="d-flex align-items-center">

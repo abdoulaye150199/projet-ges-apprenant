@@ -1,0 +1,570 @@
+/* Réinitialisation des styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* Variables pour une meilleure maintenabilité */
+:root {
+    --primary-color: #0E8F7E;
+    --primary-light: rgba(14, 143, 126, 0.1);
+    --primary-dark: #0a7a6a;
+    --secondary-color: #FF6600;
+    --secondary-light: rgba(255, 102, 0, 0.1);
+    --secondary-dark: #e55c00;
+    --background-color: #f8f9fa;
+    --text-color: #2d3748;
+    --text-muted: #718096;
+    --error-color: #e74c3c;
+    --success-color: #2ecc71;
+    --border-color: #e2e8f0;
+    --transition-speed: 0.3s;
+    --box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text-color);
+}
+
+/* Conteneur principal avec animation d'apparition plus douce */
+.auth-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 450px;
+    height: 90vh;
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 50px;
+    animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.auth-container:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.12);
+}
+
+/* Bordure latérale avec subtil gradient */
+.auth-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--secondary-color), var(--secondary-dark));
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    opacity: 0.9;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.auth-container:hover::after {
+    width: 10px;
+    opacity: 1;
+}
+
+/* Bordure inférieure avec subtil gradient */
+.auth-container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+    border-bottom-left-radius: 20px;
+    opacity: 0.9;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.auth-container:hover::before {
+    height: 10px;
+    opacity: 1;
+}
+
+/* En-tête et logo avec effet fade-in */
+.auth-header {
+    text-align: center;
+    padding: 35px 20px 20px;
+    animation: fadeIn 0.9s ease-out forwards;
+    opacity: 0;
+    animation-delay: 0.2s;
+}
+
+.auth-header img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.auth-header:hover img {
+    transform: scale(1.05);
+}
+
+.auth-header h1 {
+    color: var(--primary-color);
+    font-size: 24px;
+    margin-bottom: 6px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.auth-header h2 {
+    color: var(--secondary-color);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+}
+
+/* Titre principal avec animation */
+.auth-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 25px 0 15px;
+    color: var(--text-color);
+    animation: fadeInUp 0.9s ease-out forwards;
+    opacity: 0;
+    animation-delay: 0.3s;
+    letter-spacing: -0.7px;
+}
+
+/* Description sous le titre */
+.auth-description {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 15px;
+    margin: 0 35px 30px;
+    line-height: 1.6;
+    animation: fadeInUp 0.9s ease-out forwards;
+    opacity: 0;
+    animation-delay: 0.4s;
+}
+
+/* Formulaire avec effet de délai d'apparition */
+.auth-form {
+    padding: 0 35px;
+    animation: fadeInUp 0.9s ease-out forwards;
+    opacity: 0;
+    animation-delay: 0.5s;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    font-size: 15px;
+    transition: color 0.25s, transform 0.25s;
+    transform-origin: left;
+}
+
+.form-group:focus-within label {
+    color: var(--primary-color);
+    transform: scale(1.03);
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+    color: var(--text-color);
+}
+
+.form-control::placeholder {
+    color: #a0aec0;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.form-control:hover {
+    border-color: #cbd5e0;
+}
+
+.form-control:focus::placeholder {
+    opacity: 0.7;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 4px var(--primary-light);
+    transform: translateY(-2px);
+}
+
+/* Message d'erreur avec animation d'apparition */
+.error-message {
+    color: var(--error-color);
+    font-size: 13px;
+    margin-top: 8px;
+    display: block;
+    animation: fadeInLeft 0.3s ease-out;
+    font-weight: 500;
+}
+
+/* Lien mot de passe oublié avec effet de soulignement */
+.forgot-password {
+    text-align: right;
+    margin-bottom: 28px;
+}
+
+.forgot-password a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 14px;
+    position: relative;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 2px 4px;
+}
+
+.forgot-password a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0.6;
+}
+
+.forgot-password a:hover {
+    color: var(--secondary-dark);
+}
+
+.forgot-password a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Pied de formulaire */
+.form-footer {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 14px;
+    color: var(--text-muted);
+    animation: fadeIn 0.9s ease-out forwards;
+    opacity: 0;
+    animation-delay: 0.7s;
+}
+
+.form-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    position: relative;
+    font-weight: 600;
+    transition: color 0.3s;
+    padding: 2px 4px;
+}
+
+.form-footer a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0.6;
+}
+
+.form-footer a:hover {
+    color: var(--primary-dark);
+}
+
+.form-footer a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Bouton de connexion avec effet pulse et ripple modernes */
+.btn-login {
+    width: 100%;
+    background: linear-gradient(to right, var(--secondary-color), var(--secondary-dark));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 10px 20px rgba(255, 102, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+    transform: translateZ(0);  /* Pour optimiser l'animation */
+}
+
+.btn-login:hover {
+    box-shadow: 0 15px 25px rgba(255, 102, 0, 0.3);
+    transform: translateY(-3px);
+}
+
+.btn-login::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.4);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+}
+
+.btn-login:active::after {
+    animation: ripple 0.6s ease-out;
+}
+
+.btn-login:active {
+    transform: translateY(1px);
+    box-shadow: 0 8px 15px rgba(255, 102, 0, 0.2);
+}
+
+.btn-login.loading {
+    background-size: 200% 200%;
+    background-image: linear-gradient(
+        45deg,
+        var(--secondary-color) 25%,
+        var(--secondary-dark) 50%,
+        var(--secondary-color) 75%
+    );
+    animation: gradient-shift 1.5s ease infinite;
+    pointer-events: none;
+}
+
+/* Bouton retour */
+.btn-back {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 10;
+    transform: translateZ(0);
+}
+
+.btn-back:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    color: var(--primary-color);
+}
+
+.btn-back:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-back::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: var(--primary-light);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.btn-back:hover::before {
+    opacity: 1;
+}
+
+/* Messages d'alerte avec animation d'entrée */
+.alert {
+    padding: 16px 20px;
+    margin: 0 35px 25px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    animation: fadeInDown 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid transparent;
+}
+
+.alert:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.alert-danger {
+    background-color: #fff5f5;
+    color: var(--error-color);
+    border-color: var(--error-color);
+}
+
+.alert-success {
+    background-color: #f0fff4;
+    color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.alert-info {
+    background-color: #ebf8ff;
+    color: #3498db;
+    border-color: #3498db;
+}
+
+/* Animations améliorées */
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+    }
+    to { 
+        opacity: 1; 
+    }
+}
+
+@keyframes fadeInDown {
+    from { 
+        opacity: 0; 
+        transform: translateY(-30px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes fadeInLeft {
+    from { 
+        opacity: 0; 
+        transform: translateX(-20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0); 
+    }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0) translate(-50%, -50%);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(25) translate(-50%, -50%);
+        opacity: 0;
+    }
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Focus accessible mais plus élégant */
+:focus-visible {
+    outline: 3px solid var(--primary-light);
+    outline-offset: 2px;
+}
+
+/* Design responsive raffiné */
+@media (max-width: 480px) {
+    .auth-container {
+        border-radius: 16px;
+        height: 85vh;
+    }
+    
+    .auth-header {
+        padding: 25px 15px 15px;
+    }
+    
+    .auth-title {
+        font-size: 24px;
+        margin: 15px 0 10px;
+    }
+    
+    .auth-description {
+        margin: 0 25px 20px;
+        font-size: 14px;
+    }
+    
+    .auth-form {
+        padding: 0 25px;
+    }
+    
+    .form-control {
+        padding: 12px 15px;
+    }
+    
+    .btn-login {
+        padding: 14px;
+    }
+    
+    .alert {
+        margin: 0 25px 20px;
+        padding: 12px 15px;
+    }
+    
+    .btn-back {
+        top: 20px;
+        left: 20px;
+        width: 35px;
+        height: 35px;
+    }
+}
