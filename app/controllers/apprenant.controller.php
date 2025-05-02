@@ -7,6 +7,7 @@ require_once __DIR__ . '/../services/mail.service.php';
 require_once __DIR__ . '/../middleware/auth.middleware.php';  
 use App\Services\Export;
 use App\Middleware;  // Add this line
+use function App\Middleware\check_apprenant_auth;  // Import the specific function
 
 require_once __DIR__ . '/controller.php';
 require_once __DIR__ . '/../models/model.php';
@@ -149,53 +150,50 @@ function add_apprenant_form() {
 }
 
 function add_apprenant_process() {
-    global $model, $validator_services, $session_services;
+    global $model, $session_services;
     
     try {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            redirect('?page=add-apprenant');
-            return;
-        }
-
-        $apprenant_data = [
-            'prenom' => $_POST['prenom'] ?? '',
-            'nom' => $_POST['nom'] ?? '',
-            'email' => $_POST['email'] ?? '',
-            'telephone' => $_POST['telephone'] ?? '',
-            'adresse' => $_POST['adresse'] ?? '',
-            'date_naissance' => $_POST['date_naissance'] ?? '',
-            'lieu_naissance' => $_POST['lieu_naissance'] ?? '',
-            'referentiel_id' => $_POST['referentiel_id'] ?? '' // Changé de 'referentiel' à 'referentiel_id'
-        ];
-
-        // Validation avec les fichiers optionnels
-        $validation_result = validate_apprenant_data($apprenant_data, $_FILES);
+        check_auth();
         
-        if (!$validation_result['valid']) {
-            $session_services['set_flash_message']('error', implode('<br>', $validation_result['errors']));
-            redirect('?page=add-apprenant');
-            return;
+        // Validation des données du formulaire
+        $apprenant_data = [
+            'nom' => $_POST['nom'] ?? '',
+            'prenom' => $_POST['prenom'] ?? '',
+            'email' => $_POST['email'] ?? '',
+            'date_naissance' => $_POST['date_naissance'] ?? '',
+            'telephone' => $_POST['telephone'] ?? '',
+            'referentiel_id' => $_POST['referentiel_id'] ?? null
+        ];
+        
+        // Validation des champs requis
+        $required_fields = ['nom', 'prenom', 'email'];
+        foreach ($required_fields as $field) {
+            if (empty($apprenant_data[$field])) {
+                throw new Exception("Le champ $field est requis");
+            }
         }
-
-        // Ajout de l'apprenant
+        
+        // Ajouter l'apprenant
         $result = $model['add_apprenant']($apprenant_data);
-
+        
         if ($result['success']) {
             $message = 'Apprenant ajouté avec succès';
             if ($result['mail_sent']) {
                 $message .= ' et les identifiants ont été envoyés par email';
             } else {
                 $message .= ' mais l\'envoi du mail a échoué';
+                error_log('Identifiants : Matricule=' . $result['apprenant']['matricule'] . 
+                         ', Mot de passe=' . $result['plain_password']);
             }
             $session_services['set_flash_message']('success', $message);
-            redirect('?page=apprenants');
         } else {
-            $session_services['set_flash_message']('error', $result['message']);
-            redirect('?page=add-apprenant');
+            throw new Exception($result['message']);
         }
-
+        
+        redirect('?page=apprenants');
+        
     } catch (Exception $e) {
-        $session_services['set_flash_message']('error', 'Une erreur est survenue');
+        $session_services['set_flash_message']('error', $e->getMessage());
         redirect('?page=add-apprenant');
     }
 }
@@ -331,32 +329,33 @@ function show_apprenant_details() {
 }
 
 function show_apprenant_profile() {
-    global $model;
+    global $model, $session_services;
     
-    $user = Middleware\check_apprenant_auth();
-    
-    $apprenant = $model['get_apprenant_by_id']($user['id']);
-    if (!$apprenant) {
+    try {
+        // Now we can use check_apprenant_auth() directly
+        $user = check_apprenant_auth();
+        
+        // Rest of the function remains the same...
+        $apprenant = $model['get_apprenant_by_id']($user['id']);
+        if (!$apprenant) {
+            throw new \Exception('Apprenant non trouvé');
+        }
+        
+        // Récupérer les données supplémentaires nécessaires
+        $referentiel = $model['get_referentiel_by_id']($apprenant['referentiel_id'] ?? '');
+        $modules = $model['get_apprenant_modules']($apprenant['id']);
+        
+        // Rendre la vue avec le layout apprenant
+        render('apprenant.layout.view.php', 'apprenants/profile.view.php', [
+            'apprenant' => $apprenant,
+            'referentiel' => $referentiel,
+            'modules' => $modules
+        ]);
+        
+    } catch (\Exception $e) {
+        $session_services['set_flash_message']('error', $e->getMessage());
         redirect('?page=login');
     }
-    
-    // Récupérer les informations supplémentaires
-    $referentiel = null;
-    if (isset($apprenant['referentiel_id'])) {
-        $referentiel = $model['get_referentiel_by_id']($apprenant['referentiel_id']);
-    }
-    
-    $promotion = null;
-    if (isset($apprenant['promotion_id'])) {
-        $promotion = $model['get_promotion_by_id']($apprenant['promotion_id']);
-    }
-    
-    // Utiliser le layout apprenant au lieu du layout admin
-    render('apprenant.layout.view.php', 'apprenants/profile.view.php', [
-        'apprenant' => $apprenant,
-        'referentiel' => $referentiel,
-        'promotion' => $promotion
-    ]);
 }
 
 function exclude_apprenant() {

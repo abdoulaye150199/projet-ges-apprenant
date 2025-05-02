@@ -61,152 +61,173 @@ function get_active_promotion() {
 function list_promotions() {
     global $model, $session_services;
     
-    // Vérification si l'utilisateur est connecté
-    $user = check_auth();
-    
-    // Récupérer les paramètres
-    $search = isset($_GET['search']) ? $_GET['search'] : '';
-    $status_filter = isset($_GET['status_filter']) ? $_GET['status_filter'] : '';
-    $ref_filter = isset($_GET['ref_filter']) ? $_GET['ref_filter'] : '';
-    $current_page = isset($_GET['page_num']) ? (int)$_GET['page_num'] : 1;
-    $items_per_page = 5;
-    
-    // Récupérer toutes les promotions
-    $promotions = $model['get_all_promotions']();
-    
-    // Récupérer tous les référentiels pour les filtres
-    $all_referentiels = $model['get_all_referentiels']();
-    $referentiels_map = array();
-    foreach ($all_referentiels as $ref) {
-        $referentiels_map[$ref['id']] = $ref['name'];
-    }
-    
-    // Filtrer les promotions si un terme de recherche est présent
-    if (!empty($search)) {
-        $filtered_promotions = array();
-        foreach ($promotions as $promotion) {
-            if (stripos($promotion['name'], $search) !== false) {
-                $filtered_promotions[] = $promotion;
-            }
-        }
-        $promotions = $filtered_promotions;
-    }
-    
-    // Filtrer par statut si nécessaire
-    if ($status_filter !== '') {
-        $filtered_promotions = array();
-        foreach ($promotions as $promotion) {
-            if ($promotion['status'] === $status_filter) {
-                $filtered_promotions[] = $promotion;
-            }
-        }
-        $promotions = $filtered_promotions;
-    }
-    
-    // Filtrer par référentiel si nécessaire
-    if ($ref_filter !== '') {
-        $filtered_promotions = array();
-        foreach ($promotions as $promotion) {
-            if (isset($promotion['referentiels']) && 
-                is_array($promotion['referentiels']) && 
-                in_array($ref_filter, $promotion['referentiels'])) {
-                $filtered_promotions[] = $promotion;
-            }
-        }
-        $promotions = $filtered_promotions;
-    }
+    try {
+        $promotions = $model['get_all_promotions']();
+        
+        // Filter and sort promotions
+        usort($promotions, function($a, $b) {
+            // Convert dates to timestamps for comparison
+            $dateA = is_string($a['created_at'] ?? null) ? strtotime($a['created_at']) : 0;
+            $dateB = is_string($b['created_at'] ?? null) ? strtotime($b['created_at']) : 0;
+            
+            // Use spaceship operator for safe comparison
+            return $dateB <=> $dateA;
+        });
 
-    // Trier toutes les promotions
-    usort($promotions, function($a, $b) {
-        // Si l'une est active et l'autre ne l'est pas
-        if ($a['status'] === 'active' && $b['status'] !== 'active') {
-            return -1; // a vient avant b
-        }
-        if ($a['status'] !== 'active' && $b['status'] === 'active') {
-            return 1;  // b vient avant a
+        // Si vous avez besoin de trier
+        $promotions = $model['sort_promotions']($promotions, 'created_at', 'DESC');
+        
+        // Vérification si l'utilisateur est connecté
+        $user = check_auth();
+        
+        // Récupérer les paramètres
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+        $status_filter = isset($_GET['status_filter']) ? $_GET['status_filter'] : '';
+        $ref_filter = isset($_GET['ref_filter']) ? $_GET['ref_filter'] : '';
+        $current_page = isset($_GET['page_num']) ? (int)$_GET['page_num'] : 1;
+        $items_per_page = 5;
+        
+        // Récupérer tous les référentiels pour les filtres
+        $all_referentiels = $model['get_all_referentiels']();
+        $referentiels_map = array();
+        foreach ($all_referentiels as $ref) {
+            $referentiels_map[$ref['id']] = $ref['name'];
         }
         
-        // Si même statut, trier par date
-        $date_a = strtotime($a['date_debut']);
-        $date_b = strtotime($b['date_debut']);
-        if ($date_a === $date_b) {
-            return $b['id'] - $a['id'];
+        // Filtrer les promotions si un terme de recherche est présent
+        if (!empty($search)) {
+            $filtered_promotions = array();
+            foreach ($promotions as $promotion) {
+                if (stripos($promotion['name'], $search) !== false) {
+                    $filtered_promotions[] = $promotion;
+                }
+            }
+            $promotions = $filtered_promotions;
         }
-        return $date_b - $date_a;
-    });
-
-    // Pour éviter de paginer la promotion active
-    $active_promotion = null;
-    $other_promotions = array();
-    
-    foreach ($promotions as $promotion) {
-        if ($promotion['status'] === 'active') {
-            $active_promotion = $promotion;
-        } else {
-            $other_promotions[] = $promotion;
+        
+        // Filtrer par statut si nécessaire
+        if ($status_filter !== '') {
+            $filtered_promotions = array();
+            foreach ($promotions as $promotion) {
+                if ($promotion['status'] === $status_filter) {
+                    $filtered_promotions[] = $promotion;
+                }
+            }
+            $promotions = $filtered_promotions;
         }
-    }
-    
-    // Calculer la pagination
-    $total_items = count($other_promotions);
-    $total_pages = max(1, ceil($total_items / $items_per_page));
-    $current_page = max(1, min($current_page, $total_pages));
-    
-    // Calculer l'offset pour la pagination
-    $offset = ($current_page - 1) * $items_per_page;
-    $paginated_promotions = array_slice($other_promotions, $offset, $items_per_page);
-    
-    // Reconstruire le tableau des promotions avec la promotion active en premier
-    $display_promotions = array();
-    if ($active_promotion) {
-        $display_promotions[] = $active_promotion;
-    }
-    foreach ($paginated_promotions as $promotion) {
-        $display_promotions[] = $promotion;
-    }
-
-    // Compter les promotions actives pour les stats
-    $active_promotions_count = 0;
-    foreach ($promotions as $p) {
-        if ($p['status'] === 'active') {
-            $active_promotions_count++;
+        
+        // Filtrer par référentiel si nécessaire
+        if ($ref_filter !== '') {
+            $filtered_promotions = array();
+            foreach ($promotions as $promotion) {
+                if (isset($promotion['referentiels']) && 
+                    is_array($promotion['referentiels']) && 
+                    in_array($ref_filter, $promotion['referentiels'])) {
+                    $filtered_promotions[] = $promotion;
+                }
+            }
+            $promotions = $filtered_promotions;
         }
-    }
 
-    // Compter les référentiels de la promotion active
-    $active_promotion_referentials = 0;
-    if ($active_promotion && isset($active_promotion['referentiels'])) {
-        $active_promotion_referentials = count($active_promotion['referentiels']);
-    }
+        // Trier toutes les promotions
+        usort($promotions, function($a, $b) {
+            // Si l'une est active et l'autre ne l'est pas
+            if ($a['status'] === 'active' && $b['status'] !== 'active') {
+                return -1; // a vient avant b
+            }
+            if ($a['status'] !== 'active' && $b['status'] === 'active') {
+                return 1;  // b vient avant a
+            }
+            
+            // Si même statut, trier par date
+            $date_a = strtotime($a['date_debut'] ?? '0');
+            $date_b = strtotime($b['date_debut'] ?? '0');
+            
+            if ($date_a === $date_b) {
+                // Convertir les IDs en entiers pour la comparaison
+                $id_a = intval(str_replace('PROM_', '', $a['id']));
+                $id_b = intval(str_replace('PROM_', '', $b['id']));
+                return $id_b - $id_a;
+            }
+            return $date_b - $date_a;
+        });
 
-    // Compter le nombre total d'apprenants actifs
-    $active_learners = 0;
-    foreach ($promotions as $promotion) {
-        if ($promotion['status'] === 'active' && isset($promotion['apprenants'])) {
-            $active_learners += count($promotion['apprenants']);
+        // Pour éviter de paginer la promotion active
+        $active_promotion = null;
+        $other_promotions = array();
+        
+        foreach ($promotions as $promotion) {
+            if ($promotion['status'] === 'active') {
+                $active_promotion = $promotion;
+            } else {
+                $other_promotions[] = $promotion;
+            }
         }
-    }
+        
+        // Calculer la pagination
+        $total_items = count($other_promotions);
+        $total_pages = max(1, ceil($total_items / $items_per_page));
+        $current_page = max(1, min($current_page, $total_pages));
+        
+        // Calculer l'offset pour la pagination
+        $offset = ($current_page - 1) * $items_per_page;
+        $paginated_promotions = array_slice($other_promotions, $offset, $items_per_page);
+        
+        // Reconstruire le tableau des promotions avec la promotion active en premier
+        $display_promotions = array();
+        if ($active_promotion) {
+            $display_promotions[] = $active_promotion;
+        }
+        foreach ($paginated_promotions as $promotion) {
+            $display_promotions[] = $promotion;
+        }
 
-    render('admin.layout.view.php', 'promotion/list.view.php', [
-        'active_menu' => 'promotions',
-        'promotions' => $display_promotions,
-        'other_promotions' => $paginated_promotions,
-        'current_page' => $current_page,
-        'total_pages' => $total_pages,
-        'view_mode' => isset($_GET['view']) ? $_GET['view'] : 'grid',
-        'search' => $search,
-        'status_filter' => $status_filter,
-        'ref_filter' => $ref_filter,
-        'active_promotion' => $active_promotion,
-        'referentiels' => $all_referentiels,          // Ajout des référentiels
-        'referentiels_map' => $referentiels_map,      // Ajout de la map ID => nom
-        'stats' => array(
-            'active_learners' => $active_learners,
-            'total_referentials' => $active_promotion_referentials,
-            'active_promotions' => $active_promotions_count,
-            'total_promotions' => count($promotions)
-        )
-    ]);
+        // Compter les promotions actives pour les stats
+        $active_promotions_count = 0;
+        foreach ($promotions as $p) {
+            if ($p['status'] === 'active') {
+                $active_promotions_count++;
+            }
+        }
+
+        // Compter les référentiels de la promotion active
+        $active_promotion_referentials = 0;
+        if ($active_promotion && isset($active_promotion['referentiels'])) {
+            $active_promotion_referentials = count($active_promotion['referentiels']);
+        }
+
+        // Compter le nombre total d'apprenants actifs
+        $active_learners = 0;
+        foreach ($promotions as $promotion) {
+            if ($promotion['status'] === 'active' && isset($promotion['apprenants'])) {
+                $active_learners += count($promotion['apprenants']);
+            }
+        }
+
+        render('admin.layout.view.php', 'promotion/list.view.php', [
+            'active_menu' => 'promotions',
+            'promotions' => $display_promotions,
+            'other_promotions' => $paginated_promotions,
+            'current_page' => $current_page,
+            'total_pages' => $total_pages,
+            'view_mode' => isset($_GET['view']) ? $_GET['view'] : 'grid',
+            'search' => $search,
+            'status_filter' => $status_filter,
+            'ref_filter' => $ref_filter,
+            'active_promotion' => $active_promotion,
+            'referentiels' => $all_referentiels,          // Ajout des référentiels
+            'referentiels_map' => $referentiels_map,      // Ajout de la map ID => nom
+            'stats' => array(
+                'active_learners' => $active_learners,
+                'total_referentials' => $active_promotion_referentials,
+                'active_promotions' => $active_promotions_count,
+                'total_promotions' => count($promotions)
+            )
+        ]);
+    } catch (Exception $e) {
+        $session_services['set_flash_message']('error', 'Une erreur est survenue lors du chargement des promotions');
+        redirect('?page=dashboard');
+    }
 }
 
 // Affichage du formulaire d'ajout d'une promotion

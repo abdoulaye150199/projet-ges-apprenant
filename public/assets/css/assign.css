@@ -180,19 +180,68 @@
 }
 
 .form-check input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--primary);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--orange-primary);
   border-radius: 4px;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--bg-white);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.form-check input[type="checkbox"]:checked {
+  background: var(--orange-primary);
+  border-color: var(--orange-primary);
+}
+
+.form-check input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form-check input[type="checkbox"]:hover {
+  border-color: var(--orange-secondary);
+  box-shadow: 0 0 0 3px var(--orange-light);
+}
+
+.checkbox-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-check-input {
+  margin: 0;
 }
 
 .form-check label {
-  color: var(--text-secondary);
-  font-size: 14px;
-  cursor: pointer;
+  margin: 0;
+  flex: 1;
 }
-
 /* Action buttons */
 .action-buttons {
   display: flex;

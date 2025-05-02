@@ -1,25 +1,33 @@
 <div class="modal-container">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>Ajouter une référentiel</h2>
+            <h2>Ajouter des référentiels</h2>
             <a href="?page=referentiels" class="close-button">×</a>
         </div>
         
         <div class="form-group">
-            <label for="referentiel">Libelé référentiel</label>
+            <label>Sélectionner les référentiels</label>
             <form action="?page=assign-referentiels-process" method="POST">
-                <select name="referentiels[]" id="referentiel" class="form-control">
-                    <option value="">Choisir un référentiel</option>
+                <div class="checkbox-group">
                     <?php foreach ($unassigned_referentiels as $ref): ?>
-                        <option value="<?= $ref['id'] ?>"><?= htmlspecialchars($ref['name']) ?></option>
+                        <div class="form-check">
+                            <input type="checkbox" 
+                                   id="ref_<?= $ref['id'] ?>"
+                                   name="referentiels[]" 
+                                   value="<?= $ref['id'] ?>" 
+                                   class="form-check-input">
+                            <label for="ref_<?= $ref['id'] ?>">
+                                <?= htmlspecialchars($ref['name']) ?>
+                            </label>
+                        </div>
                     <?php endforeach; ?>
-                </select>
-                <button type="submit" class="add-btn">Ajouter</button>
+                </div>
+                <button type="submit" class="add-btn">Ajouter les référentiels</button>
             </form>
         </div>
         
         <div class="form-group">
-            <label>Promotion active</label>
+            <label>Référentiels assignés</label>
             <div class="tags-container">
                 <?php if (!empty($assigned_referentiels)): ?>
                     <?php $tags_colors = ['green', 'blue', 'purple', 'orange', 'pink']; ?>

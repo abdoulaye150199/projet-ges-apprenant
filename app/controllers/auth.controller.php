@@ -31,68 +31,46 @@ function login_page() {
 function login_process() {
     global $model, $session_services;
     
-    $login = $_POST['login'] ?? '';  // Pour accepter email ou matricule
-    $password = $_POST['password'] ?? '';
-    
-    // Validation
-    $errors = [];
-    if (empty($login)) {
-        $errors['login'] = 'Le login est requis';
-    }
-    if (empty($password)) {
-        $errors['password'] = 'Le mot de passe est requis';
-    }
-    
-    if (!empty($errors)) {
-        render('auth.layout.view.php', 'auth/login.html.php', [
-            'errors' => $errors,
-            'login' => $login
-        ]);
-        return;
-    }
+    try {
+        $login = $_POST['login'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-    // Tentative de connexion apprenant
-    $result = $model['authenticate_apprenant']($login, $password);
-    if ($result['success']) {
-        $apprenant = $result['data'];
-        // Stockage des données de session
-        $session_services['set_session']('user', [
-            'id' => $apprenant['id'],
-            'matricule' => $apprenant['matricule'],
-            'prenom' => $apprenant['prenom'],
-            'nom' => $apprenant['nom'],
-            'email' => $apprenant['email'],
-            'photo' => $apprenant['photo'] ?? null,
-            'referentiel_id' => $apprenant['referentiel_id'],
-            'profile' => 'Apprenant',
-            'type' => 'apprenant'
-        ]);
+        // Tentative de connexion apprenant
+        $result = $model['authenticate_apprenant']($login, $password);
         
-        // Redirection vers le profil apprenant
-        redirect('?page=apprenant-profile');
-        return;
+        if ($result['success']) {
+            // Stocker les données de session
+            $session_services['set_session']('user', $result['data']);
+            
+            // Rediriger vers la page de profil apprenant
+            redirect('?page=apprenant-profile');
+            return;
+        }
+
+        // Si ce n'est pas un apprenant, essayer admin
+        $result = $model['authenticate_admin']($login, $password);
+        if ($result['success']) {
+            $user = $result['data'];
+            $session_services['set_session']('user', [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'profile' => $user['profile'],
+                'type' => 'admin'
+            ]);
+            
+            redirect('?page=dashboard');
+            return;
+        }
+
+        // Échec de connexion
+        $session_services['set_flash_message']('error', 'Identifiants invalides');
+        redirect('?page=login');
+        
+    } catch (Exception $e) {
+        $session_services['set_flash_message']('error', 'Une erreur est survenue');
+        redirect('?page=login');
     }
-    
-    // Si ce n'est pas un apprenant, essayer admin
-    $admin = $model['authenticate']($login, $password);
-    if ($admin) {
-        $session_services['set_session']('user', [
-            'id' => $admin['id'],
-            'name' => $admin['name'] ?? 'Administrateur',
-            'email' => $admin['email'] ?? '',
-            'profile' => $admin['profile'] ?? 'Admin',
-            'photo' => $admin['photo'] ?? '/assets/images/default-avatar.png',
-            'type' => 'admin'
-        ]);
-        redirect('?page=dashboard');
-        return;
-    }
-    
-    // Échec de connexion
-    $session_services['set_flash_message']('error', 'Identifiants invalides');
-    render('auth.layout.view.php', 'auth/login.html.php', [
-        'login' => $login,
-    ]);
 }
 
 // Déconnexion

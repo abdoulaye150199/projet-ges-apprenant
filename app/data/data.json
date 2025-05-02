@@ -4,11 +4,9 @@
             "id": "1",
             "name": "Abdoulaye Diallo",
             "email": "diallo@gmail.com",
-            "password": "123456",
+            "password": "1234567",
             "profile": "Admin",
-            "image": "assets\/images\/tof2.png",
-            "reset_token": "edc990106cac2da0ed7c7940008d634a",
-            "reset_expire": 1746106635
+            "image": "assets\/images\/tof2.png"
         }
     ],
     "promotions": [
@@ -54,12 +52,12 @@
             ],
             "id": 19,
             "referentiels": [
+                "680ff2176d805",
                 "680ff9ee7eada",
                 "680ff1b19aaec",
-                "",
-                "680ff1f50ecfc",
-                "680ff2176d805"
-            ]
+                "680ff1f50ecfc"
+            ],
+            "updated_at": "2025-05-02 01:13:21"
         },
         {
             "name": "promotion 2016",
@@ -69,7 +67,8 @@
             "status": "inactive",
             "etat": "terminee",
             "apprenants": [],
-            "id": 22
+            "id": 22,
+            "updated_at": "2025-05-02 00:48:59"
         },
         {
             "name": "projet odc",
@@ -179,6 +178,46 @@
             "status": "inactive",
             "apprenants": [],
             "id": 39
+        },
+        {
+            "name": "ma promo",
+            "date_debut": "1970-01-01",
+            "date_fin": "2027-12-01",
+            "image": "\/assets\/images\/uploads\/promotions\/promotion_6813ede4e0800.jpeg",
+            "referentiels": [
+                "680ff1b19aaec",
+                "680ff1f50ecfc"
+            ],
+            "status": "inactive",
+            "apprenants": [],
+            "id": "PROM_6813ede4e090e",
+            "created_at": "2025-05-01 21:55:48"
+        },
+        {
+            "name": "projet odc1",
+            "date_debut": "1970-01-01",
+            "date_fin": "2027-12-01",
+            "image": "\/assets\/images\/uploads\/promotions\/promotion_6813f49a33392.jpg",
+            "referentiels": [
+                "680ff1b19aaec"
+            ],
+            "status": "inactive",
+            "apprenants": [],
+            "id": "PROM_6813f49a33564",
+            "created_at": "2025-05-01 22:24:26"
+        },
+        {
+            "name": "MaPromo",
+            "date_debut": "1970-01-01",
+            "date_fin": "2027-12-01",
+            "image": "\/assets\/images\/uploads\/promotions\/promotion_6813f69d54c20.jpeg",
+            "referentiels": [
+                "680ff1f50ecfc"
+            ],
+            "status": "inactive",
+            "apprenants": [],
+            "id": "PROM_6813f69d54de1",
+            "created_at": "2025-05-01 22:33:01"
         }
     ],
     "referentiels": [
@@ -226,6 +265,16 @@
             "sessions": 2,
             "image": "assets\/images\/referentiels\/680ff9ee7e7c1.jpg",
             "modules": []
+        },
+        {
+            "id": "REF_6813f45eb8a5f",
+            "name": "ludo",
+            "description": "king",
+            "capacite": 4,
+            "sessions": 1,
+            "image": "assets\/images\/referentiels\/6813f45eb88bd.jpeg",
+            "modules": [],
+            "created_at": "2025-05-01 22:23:26"
         }
     ],
     "apprenants": [
@@ -274,21 +323,6 @@
             "promotion_id": 19
         },
         {
-            "prenom": "Abdoulaye",
-            "nom": "Diallo",
-            "email": "layesdlc@gmail.com",
-            "telephone": "760000001",
-            "adresse": "gryoff",
-            "date_naissance": "14\/01\/2002",
-            "lieu_naissance": "Dakar",
-            "referentiel_id": "680ff1f50ecfc",
-            "id": "68136d7478476",
-            "matricule": "ODC-2025-0004",
-            "password": "$2y$10$0NOGAx2AyGWGFiXpZaDkm.mqJiDR3gCWZFB1XPogfFTls8mGNO6tS",
-            "created_at": "2025-05-01 12:47:48",
-            "status": "actif"
-        },
-        {
             "prenom": "Bouba",
             "nom": "BA",
             "email": "abdoulaye150199@gmail.com",
@@ -301,21 +335,6 @@
             "matricule": "ODC-2025-0005",
             "password": "$2y$10$DpuiK0pq.k.84e0dj.8uCuF74h1aBC5POjqz4.ZSGdm3CyWpOyywe",
             "created_at": "2025-05-01 13:48:13",
-            "status": "actif"
-        },
-        {
-            "prenom": "Abdoulaye",
-            "nom": "Diallo",
-            "email": "layesdlc@gmail.com",
-            "telephone": "760000006",
-            "adresse": "Konoha",
-            "date_naissance": "14\/01\/2002",
-            "lieu_naissance": "Dakar",
-            "referentiel_id": "680ff2176d805",
-            "id": "68139878d2a07",
-            "matricule": "ODC-2025-0006",
-            "password": "$2y$10$Ey.3AALr4lTeyz81WcYKceK5OiiZGHA77sQxM6RJunDifaZxHvaem",
-            "created_at": "2025-05-01 15:51:20",
             "status": "actif"
         },
         {
@@ -346,409 +365,18 @@
             "created_at": "2025-05-01 18:09:26"
         },
         {
-            "prenom": "ODC-2025-0007",
-            "nom": "Gueye",
-            "email": "Fatou",
-            "telephone": "fatou.gueye@gmail.com",
-            "adresse": "775493475",
-            "date_naissance": "Data Science",
-            "lieu_naissance": "En formation",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0007",
-                "Gueye",
-                "Fatou",
-                "fatou.gueye@gmail.com",
-                "775493475",
-                "Data Science",
-                "En formation"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8d6a3a19",
-            "matricule": "ODC-2025-0008",
-            "password": "$2y$10$SuetzBYuDJC2ArGVy8vYhOxDfL66.IaIOwPbfNf91WrSXuh08zEBe",
-            "created_at": "2025-05-01 18:09:26"
-        },
-        {
-            "prenom": "ODC-2025-0009",
-            "nom": "Fall",
-            "email": "Cheikh",
-            "telephone": "cheikh.fall@gmail.com",
-            "adresse": "772402503",
-            "date_naissance": "UI\/UX Design",
-            "lieu_naissance": "Abandonn\u00e9",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0009",
-                "Fall",
-                "Cheikh",
-                "cheikh.fall@gmail.com",
-                "772402503",
-                "UI\/UX Design",
-                "Abandonn\u00e9"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8d6b353c",
-            "matricule": "ODC-2025-0009",
-            "password": "$2y$10$0seOuh1G\/OgzTrnzbWenNemDtDAfND00bwzzzLv9\/jLyJIYQo\/fTO",
-            "created_at": "2025-05-01 18:09:26"
-        },
-        {
-            "prenom": "ODC-2025-0011",
-            "nom": "Ndiaye",
-            "email": "Astou",
-            "telephone": "astou.ndiaye@gmail.com",
-            "adresse": "773755860",
-            "date_naissance": "D\u00e9veloppement Web",
-            "lieu_naissance": "Abandonn\u00e9",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0011",
-                "Ndiaye",
-                "Astou",
-                "astou.ndiaye@gmail.com",
-                "773755860",
-                "D\u00e9veloppement Web",
-                "Abandonn\u00e9"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8d6c0a56",
-            "matricule": "ODC-2025-0010",
-            "password": "$2y$10$.xC7QLYHnjfxa0ItblN...y5BLNCD6Dy3RqgLTrmkgQJIc3xK4HbC",
-            "created_at": "2025-05-01 18:09:26"
-        },
-        {
-            "prenom": "ODC-2025-0014",
             "nom": "Diallo",
-            "email": "Marie",
-            "telephone": "admin@odc.sn",
-            "adresse": "767777777",
-            "date_naissance": "DEV WEB\/MOBILE",
-            "lieu_naissance": "exclu",
-            "referentiel_id": "",
+            "prenom": "Abdoulaye",
+            "email": "layesdlc@gmail.com",
+            "date_naissance": "14\/01\/2002",
+            "telephone": "760000000",
+            "referentiel_id": "680ff1b19aaec",
+            "id": "6814200372faf",
+            "matricule": "ODC-2025-0006",
+            "password": "$2y$10$kFsJO7XZPaCzZvAo8whTR.Z90.QO.QDtqKo30OOMBYNtLbwjMPeou",
+            "created_at": "2025-05-02 01:29:39",
             "status": "actif",
-            "imported_data": [
-                "ODC-2025-0014",
-                "Diallo",
-                "Marie",
-                "admin@odc.sn",
-                "767777777",
-                "DEV WEB\/MOBILE",
-                "exclu"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fa3ae14",
-            "matricule": "ODC-2025-0011",
-            "password": "$2y$10$Z1GJYt\/twBGjiaTcJOw2BOWyT9Mt.JpbjUzfcbhkP04p5FaA5EWRq",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0015",
-            "nom": "Who",
-            "email": "Jin",
-            "telephone": "jinwho@gmail.com",
-            "adresse": "773333333",
-            "date_naissance": "AWS",
-            "lieu_naissance": "exclu",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0015",
-                "Who",
-                "Jin",
-                "jinwho@gmail.com",
-                "773333333",
-                "AWS",
-                "exclu"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fa4aa61",
-            "matricule": "ODC-2025-0012",
-            "password": "$2y$10$ilatWiHk\/4wTIcb7Eam8nOqNxoOS0jcYlRVh\/WPBhCa16xhqxQcRa",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0016",
-            "nom": "Uzumaki",
-            "email": "Naruto",
-            "telephone": "Uzumaki@gmail.com",
-            "adresse": "782222222",
-            "date_naissance": "DEV DATA",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0016",
-                "Uzumaki",
-                "Naruto",
-                "Uzumaki@gmail.com",
-                "782222222",
-                "DEV DATA",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fa596b1",
-            "matricule": "ODC-2025-0013",
-            "password": "$2y$10$wWA6ubbvAoXpAghcO12\/MupHkAA.gJFMhBsgPAnA\/9EtDw5MNFxu.",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0005",
-            "nom": "Diop",
-            "email": "1058215",
-            "telephone": "seydina.diop@exemple.com",
-            "adresse": "777777777",
-            "date_naissance": "REF DIG",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0005",
-                "Diop",
-                "1058215",
-                "seydina.diop@exemple.com",
-                "777777777",
-                "REF DIG",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fa6796d",
-            "matricule": "ODC-2025-0014",
-            "password": "$2y$10$6mBlBSRYt8sScfSJtuPpzuLw5L7jERWZYRo9VPlTjC8MZ4W7uLf5O",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0006",
-            "nom": "Gueye",
-            "email": "1058216",
-            "telephone": "mamadou.gueye@exemple.com",
-            "adresse": "783116655",
-            "date_naissance": "DEV WEB\/MOBILE",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0006",
-                "Gueye",
-                "1058216",
-                "mamadou.gueye@exemple.com",
-                "783116655",
-                "DEV WEB\/MOBILE",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fa73e36",
-            "matricule": "ODC-2025-0015",
-            "password": "$2y$10$qm637Z6Xn2pduKH8kU2HO.KVYFPLgbZrCf6bIceyfUB3rEjkJNuIm",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0007",
-            "nom": "Lo",
-            "email": "1058217",
-            "telephone": "Ndiaga",
-            "adresse": "ndiaga.lo@exemple.com",
-            "date_naissance": "Non d\u00e9fini",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0007",
-                "Lo",
-                "1058217",
-                "Ndiaga",
-                "ndiaga.lo@exemple.com",
-                "Non d\u00e9fini",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fa83419",
-            "matricule": "ODC-2025-0016",
-            "password": "$2y$10$NPRLSoeRbyHR2W3ow.QXWueW1adhnUuV6d0iRNW3PiaB6Ibg8dIJG",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0008",
-            "nom": "Diop",
-            "email": "1058218",
-            "telephone": "Seydina Mouhammad",
-            "adresse": "seydina.diop2@exemple.com",
-            "date_naissance": "Non d\u00e9fini",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0008",
-                "Diop",
-                "1058218",
-                "Seydina Mouhammad",
-                "seydina.diop2@exemple.com",
-                "Non d\u00e9fini",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fa90258",
-            "matricule": "ODC-2025-0017",
-            "password": "$2y$10$rSrT\/JejnW8NQwVUzDgYfexxZ35w6.5NDuHeT.GNGT.bq7QbBxU96",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0009",
-            "nom": "Diedhiou",
-            "email": "1058224",
-            "telephone": "Ousseynou",
-            "adresse": "ousseynou.diedhiou@exemple.com",
-            "date_naissance": "Non d\u00e9fini",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0009",
-                "Diedhiou",
-                "1058224",
-                "Ousseynou",
-                "ousseynou.diedhiou@exemple.com",
-                "Non d\u00e9fini",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fa9cf7e",
-            "matricule": "ODC-2025-0018",
-            "password": "$2y$10$JCW.SHKDGrEdydCU5ypYheGWsruzkte1LFhfkfMWlmY4b1x3\/UFIe",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0010",
-            "nom": "Diallo",
-            "email": "ODC-2025-0011",
-            "telephone": "Abdoulaye ",
-            "adresse": "layeprof221@gmail.com",
-            "date_naissance": "Non d\u00e9fini",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0010",
-                "Diallo",
-                "ODC-2025-0011",
-                "Abdoulaye ",
-                "layeprof221@gmail.com",
-                "Non d\u00e9fini",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8faab952",
-            "matricule": "ODC-2025-0019",
-            "password": "$2y$10$5UE19\/QmAlay3WfFxA3iEuAHx87ddtKcpPpO\/ftLnI2zklZ0k0G0u",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0011",
-            "nom": "Diallo",
-            "email": "ODC-2025-0013",
-            "telephone": "moussa ",
-            "adresse": "moussa@gmail.com",
-            "date_naissance": "Non d\u00e9fini",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0011",
-                "Diallo",
-                "ODC-2025-0013",
-                "moussa ",
-                "moussa@gmail.com",
-                "Non d\u00e9fini",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fabc336",
-            "matricule": "ODC-2025-0020",
-            "password": "$2y$10$H6EIyPfiZDsQSemQKShpXOzVoneV1SCwXas53LxsxEhKQ9C2.tx4e",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0012",
-            "nom": "Uzumaki",
-            "email": "Boruto",
-            "telephone": "abdoulaye150199@gmail.com",
-            "adresse": "782917770",
-            "date_naissance": "Non d\u00e9fini",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0012",
-                "Uzumaki",
-                "Boruto",
-                "abdoulaye150199@gmail.com",
-                "782917770",
-                "Non d\u00e9fini",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fac9e96",
-            "matricule": "ODC-2025-0021",
-            "password": "$2y$10$EtOdhbK.YzdtsYDyHY7sg.mEzFvABLmjzQJ3\/LlqasBAAF0T3CA\/q",
-            "created_at": "2025-05-01 18:10:02"
-        },
-        {
-            "prenom": "ODC-2025-0013",
-            "nom": "Uchiwa",
-            "email": "sasuk\u00e9",
-            "telephone": "copilot12odc@gmail.com",
-            "adresse": "768888888",
-            "date_naissance": "Non d\u00e9fini",
-            "lieu_naissance": "actif",
-            "referentiel_id": "",
-            "status": "actif",
-            "imported_data": [
-                "ODC-2025-0013",
-                "Uchiwa",
-                "sasuk\u00e9",
-                "copilot12odc@gmail.com",
-                "768888888",
-                "Non d\u00e9fini",
-                "actif"
-            ],
-            "missing_fields": [
-                "lieu_naissance"
-            ],
-            "id": "6813b8fad9222",
-            "matricule": "ODC-2025-0022",
-            "password": "$2y$10$lx21pRjQsjskfBeauX.MBuiH2Qb.lNl834PT8dtl8RiRmy4rOkxiK",
-            "created_at": "2025-05-01 18:10:02"
+            "first_login": true
         }
     ]
 }

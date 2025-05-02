@@ -7,22 +7,17 @@ require_once __DIR__ . '/../services/session.service.php';
 function check_apprenant_auth() {
     global $session_services;
     
-    // Start session if not already started
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    $session_services['start_session']();
+    
+    if (!$session_services['is_logged_in']()) {
+        redirect('?page=login');
+        return false;
     }
     
-    // Récupérer l'utilisateur en session
-    $user = $session_services['get_session']('user');
-    
-    // Vérifier si l'utilisateur est un apprenant
-    if (!$user || $user['type'] !== 'apprenant') {
-        // Stocker un message d'erreur
-        $session_services['set_flash_message']('error', 'Accès non autorisé');
-        
-        // Rediriger vers la page de connexion
-        header('Location: ?page=login&type=apprenant');
-        exit();
+    $user = $session_services['get_current_user']();
+    if ($user['type'] !== 'apprenant') {
+        redirect('?page=forbidden');
+        return false;
     }
     
     return $user;

@@ -123,7 +123,9 @@
                                      height="40"
                                      alt="Photo de profil">
                             </td>
-                            <td><?= htmlspecialchars($apprenant['matricule']) ?></td>
+                            <td class="student-matricule">
+                                <?= htmlspecialchars($apprenant['matricule'] ?? 'N/A') ?>
+                            </td>
                             <td><?= htmlspecialchars($apprenant['prenom'] . ' ' . $apprenant['nom']) ?></td>
                             <td><?= htmlspecialchars($apprenant['adresse']) ?></td>
                             <td><?= htmlspecialchars($apprenant['telephone']) ?></td>
