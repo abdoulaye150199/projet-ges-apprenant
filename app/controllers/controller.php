@@ -30,12 +30,20 @@ function render($layout, $view, $data = []) {
     // Extract variables for the view
     extract($data);
     
+    // Build paths with proper directory structure
+    $layout_path = __DIR__ . '/../views/layout/' . $layout;
+    $view_path = __DIR__ . '/../views/' . $view;
+    
+    // Debug paths
+    error_log("Layout path: $layout_path");
+    error_log("View path: $view_path");
+    
     // Start output buffering
     ob_start();
-    require_once __DIR__ . '/../views/' . $view;
+    require_once $view_path;
     $content = ob_get_clean();
     
-    require_once __DIR__ . '/../views/layout/' . $layout;
+    require_once $layout_path;
 }
 
 // Redirection vers une autre page

@@ -22,6 +22,7 @@
             <div class="form-group">
                 <label for="promotion-name">Nom de la promotion*</label>
                 <input type="text" 
+                       class="form-control"
                        id="promotion-name" 
                        name="name" 
                        placeholder="Ex: Promotion 2025" 
@@ -35,6 +36,7 @@
                 <div class="form-group">
                     <label for="date_debut">Date de début (JJ-MM-AAAA)*</label>
                     <input type="text" 
+                           class="form-control"
                            id="date_debut" 
                            name="date_debut" 
                            placeholder="15-01-2025"
@@ -49,6 +51,7 @@
                 <div class="form-group">
                     <label for="date_fin">Date de fin (JJ-MM-AAAA)*</label>
                     <input type="text" 
+                           class="form-control"
                            id="date_fin" 
                            name="date_fin" 
                            placeholder="31-12-2025"
@@ -62,10 +65,13 @@
             </div>
 
             <div class="form-group">
-                <label>Photo de la promotion*</label>
-                <input type="file" 
-                       name="image" 
-                       accept="image/png,image/jpeg">
+                <label for="promotion-image">Photo de la promotion*</label>
+                <label for="promotion-image" class="file-upload">
+                    <input type="file" 
+                           id="promotion-image"
+                           name="image" 
+                           accept="image/png,image/jpeg">
+                </label>
                 <p class="file-restrictions">Format JPG, PNG. Taille max 2MB</p>
                 <?php if (isset($errors['image'])): ?>
                     <span class="error-message"><?= $errors['image'] ?></span>

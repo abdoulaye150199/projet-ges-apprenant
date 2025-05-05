@@ -48,10 +48,10 @@ container {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.form-section {
+form-section {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.1rem;
 }
 
 .image-upload {

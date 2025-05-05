@@ -4,44 +4,19 @@
             "id": "1",
             "name": "Abdoulaye Diallo",
             "email": "diallo@gmail.com",
-            "password": "1234567",
+            "password": "123456",
             "profile": "Admin",
-            "image": "assets\/images\/tof2.png"
+            "image": "assets\/images\/tof2.png",
+            "reset_token": "edc990106cac2da0ed7c7940008d634a",
+            "reset_expire": 1746106635
         }
     ],
     "promotions": [
         {
-            "id": 3,
-            "name": "Promo 3 R\u00e9f\u00e9rents Digital",
-            "status": "inactive",
-            "etat": "terminee",
-            "image": "cloud.jpg",
-            "date_debut": "2024-03-01",
-            "date_fin": "2025-02-28",
-            "apprenants": [
-                {
-                    "id": 6,
-                    "name": "David Lee"
-                },
-                {
-                    "id": 7,
-                    "name": "Emma Davis"
-                },
-                {
-                    "id": 8,
-                    "name": "Frank Miller"
-                }
-            ],
-            "referentiels": [
-                "1",
-                "68083304e5616"
-            ]
-        },
-        {
             "name": "promo 7",
             "date_debut": "2025-04-23",
             "date_fin": "2025-04-24",
-            "image": "assets\/images\/tof1.Png",
+            "image": "\/assets\/images\/uploads\/promotions\/promo7.jpg",
             "status": "active",
             "etat": "en_cours",
             "apprenants": [
@@ -52,172 +27,36 @@
             ],
             "id": 19,
             "referentiels": [
-                "680ff2176d805",
-                "680ff9ee7eada",
+                "",
+                "680ff96d4731d",
                 "680ff1b19aaec",
-                "680ff1f50ecfc"
-            ],
-            "updated_at": "2025-05-02 01:13:21"
+                "680ff1f50ecfc",
+                "680ff2176d805"
+            ]
         },
         {
-            "name": "promotion 2016",
-            "date_debut": "2024-05-12",
-            "date_fin": "2024-06-14",
-            "image": "6809100a95bb5.png",
-            "status": "inactive",
-            "etat": "terminee",
-            "apprenants": [],
-            "id": 22,
-            "updated_at": "2025-05-02 00:48:59"
-        },
-        {
-            "name": "projet odc",
-            "date_debut": "2020-01-15",
-            "date_fin": "2027-01-12",
-            "image": "promotions\/680a338ca8c53_Capture_d_____cran_du_2025-03-04_11-15-56.png",
-            "apprenants": [],
-            "id": 25,
-            "status": "inactive",
-            "etat": "terminee"
-        },
-        {
-            "name": "projet odc1",
-            "date_debut": "2020-01-15",
-            "date_fin": "2027-01-12",
-            "image": "assets\/images\/uploads\/promotions\/cloud.jpg",
-            "status": "inactive",
-            "etat": "terminee",
-            "apprenants": [],
-            "id": 26
-        },
-        {
-            "name": "promo devops",
-            "date_debut": "2020-01-15",
-            "date_fin": "2027-01-12",
-            "image": "assets\/images\/uploads\/promotions\/680a603d07fb8.png",
-            "status": "inactive",
-            "etat": "terminee",
-            "apprenants": [],
-            "id": 29
-        },
-        {
-            "name": "promo aws ecsa",
-            "date_debut": "2020-01-15",
-            "date_fin": "2027-01-12",
-            "image": "public\/assets\/images\/uploads\/promotions\/680a6b1718e7a_photo.png",
-            "status": "inactive",
-            "etat": "terminee",
-            "apprenants": [],
-            "id": 31
-        },
-        {
-            "name": "Promo 5 ECSA",
-            "date_debut": "2023-08-12",
-            "date_fin": "2024-08-12",
-            "image": "assets\/images\/uploads\/promotions\/cloud.jpg",
-            "status": "inactive",
-            "apprenants": [],
-            "id": 34
-        },
-        {
-            "name": "E-commerce",
-            "date_debut": "2017-01-15",
-            "date_fin": "2018-04-14",
-            "image": "assets\/images\/uploads\/promotions\/.jpeg",
-            "status": "inactive",
-            "apprenants": [],
-            "id": 35
-        },
-        {
-            "name": "2026",
-            "date_debut": "15\/01\/2020",
-            "date_fin": "12\/02\/2021",
-            "image": "assets\/images\/uploads\/promotions\/data.png",
-            "referentiels": [
-                "1"
-            ],
-            "status": "inactive",
-            "apprenants": [],
-            "id": 36
-        },
-        {
-            "name": "Promo 6 ECSA",
-            "date_debut": "2023-08-12",
-            "date_fin": "2024-08-12",
-            "image": "\/assets\/images\/im1.jpg",
-            "referentiels": [
-                "1"
-            ],
-            "status": "inactive",
-            "apprenants": [],
-            "id": 37
-        },
-        {
-            "name": "Promo 5 ECSA",
-            "date_debut": "2000-12-08",
-            "date_fin": "2001-09-12",
-            "image": "\/assets\/images\/uploads\/promotions\/promotion_680ee1736c726.png",
-            "referentiels": [
-                "2",
-                "3",
-                "5",
-                "680e23e5f228e"
-            ],
-            "status": "inactive",
-            "apprenants": [],
-            "id": 38
-        },
-        {
-            "name": "2026",
+            "name": "promotion 10",
             "date_debut": "1970-01-01",
             "date_fin": "2023-12-02",
-            "image": "\/assets\/images\/uploads\/promotions\/promotion_6813cbd35b857.jpeg",
+            "image": "\/assets\/images\/uploads\/promotions\/promotion_68155864e88d9.jpeg",
             "referentiels": [
                 "680ff1b19aaec"
             ],
             "status": "inactive",
             "apprenants": [],
-            "id": 39
+            "id": 40
         },
         {
-            "name": "ma promo",
+            "name": "promo 5",
             "date_debut": "1970-01-01",
-            "date_fin": "2027-12-01",
-            "image": "\/assets\/images\/uploads\/promotions\/promotion_6813ede4e0800.jpeg",
-            "referentiels": [
-                "680ff1b19aaec",
-                "680ff1f50ecfc"
-            ],
-            "status": "inactive",
-            "apprenants": [],
-            "id": "PROM_6813ede4e090e",
-            "created_at": "2025-05-01 21:55:48"
-        },
-        {
-            "name": "projet odc1",
-            "date_debut": "1970-01-01",
-            "date_fin": "2027-12-01",
-            "image": "\/assets\/images\/uploads\/promotions\/promotion_6813f49a33392.jpg",
+            "date_fin": "2025-05-05",
+            "image": "\/assets\/images\/uploads\/promotions\/promotion_6818b0fd72ccd.jpg",
             "referentiels": [
                 "680ff1b19aaec"
             ],
             "status": "inactive",
             "apprenants": [],
-            "id": "PROM_6813f49a33564",
-            "created_at": "2025-05-01 22:24:26"
-        },
-        {
-            "name": "MaPromo",
-            "date_debut": "1970-01-01",
-            "date_fin": "2027-12-01",
-            "image": "\/assets\/images\/uploads\/promotions\/promotion_6813f69d54c20.jpeg",
-            "referentiels": [
-                "680ff1f50ecfc"
-            ],
-            "status": "inactive",
-            "apprenants": [],
-            "id": "PROM_6813f69d54de1",
-            "created_at": "2025-05-01 22:33:01"
+            "id": 41
         }
     ],
     "referentiels": [
@@ -265,16 +104,6 @@
             "sessions": 2,
             "image": "assets\/images\/referentiels\/680ff9ee7e7c1.jpg",
             "modules": []
-        },
-        {
-            "id": "REF_6813f45eb8a5f",
-            "name": "ludo",
-            "description": "king",
-            "capacite": 4,
-            "sessions": 1,
-            "image": "assets\/images\/referentiels\/6813f45eb88bd.jpeg",
-            "modules": [],
-            "created_at": "2025-05-01 22:23:26"
         }
     ],
     "apprenants": [
@@ -297,44 +126,19 @@
             "referentiel_id": "680ff1b19aaec"
         },
         {
-            "id": "6812779366371",
-            "matricule": "ODC-2025-0009",
-            "prenom": "ODC-2025-0012",
-            "nom": "Diop",
-            "email": "Ousmane",
-            "telephone": "ousmane.diop@gmail.com",
-            "adresse": "774100485",
-            "referentiel_id": null,
-            "status": "actif",
-            "created_at": "2025-04-30 19:18:43",
-            "promotion_id": 19
-        },
-        {
-            "id": "68127793665f4",
-            "matricule": "ODC-2025-0010",
-            "prenom": "ODC-2025-0015",
-            "nom": "Ndoye",
-            "email": "Ibrahima",
-            "telephone": "ibrahima.ndoye@gmail.com",
-            "adresse": "778683929",
-            "referentiel_id": null,
-            "status": "actif",
-            "created_at": "2025-04-30 19:18:43",
-            "promotion_id": 19
-        },
-        {
-            "prenom": "Bouba",
-            "nom": "BA",
-            "email": "abdoulaye150199@gmail.com",
-            "telephone": "778889900",
-            "adresse": "GR",
-            "date_naissance": "13\/10\/2000",
-            "lieu_naissance": "Dk",
+            "prenom": "Jin",
+            "nom": "Uzumaki",
+            "email": "layesdlc@gmail.com",
+            "telephone": "760000000",
+            "adresse": "gryoff",
+            "date_naissance": "14\/01\/2002",
+            "lieu_naissance": "Dakar",
             "referentiel_id": "680ff1b19aaec",
-            "id": "68137b9d1d408",
-            "matricule": "ODC-2025-0005",
-            "password": "$2y$10$DpuiK0pq.k.84e0dj.8uCuF74h1aBC5POjqz4.ZSGdm3CyWpOyywe",
-            "created_at": "2025-05-01 13:48:13",
+            "photo": "apprenants\/68155f9dbd2fc.jpeg",
+            "id": "68155f9dbd8ab",
+            "matricule": "ODC-2025-0002",
+            "password": "$2y$10$m37ZnF2ldrUktxrJPYj2UOZ1mxaJrZ1bw1A6nQAO3Fr.hvfJkOqDy",
+            "created_at": "2025-05-03 00:13:17",
             "status": "actif"
         },
         {
@@ -359,24 +163,177 @@
             "missing_fields": [
                 "lieu_naissance"
             ],
-            "id": "6813b8d68d0e2",
-            "matricule": "ODC-2025-0007",
-            "password": "$2y$10$hRw\/I6Lzdbuz8wIfrx13QO\/cAXCG2fgjXZjHtQhMLk4w.n55ExcqS",
-            "created_at": "2025-05-01 18:09:26"
+            "id": "6817f7c0bbca0",
+            "matricule": "ODC-2025-0005",
+            "password": "$2y$10$ZrP3KwH\/pwjYvkxYsGhrX.dHmHW750tIdv2T\/4QtkSXOm6s\/haEBK",
+            "created_at": "2025-05-04 23:26:56"
         },
         {
-            "nom": "Diallo",
-            "prenom": "Abdoulaye",
-            "email": "layesdlc@gmail.com",
-            "date_naissance": "14\/01\/2002",
-            "telephone": "760000000",
-            "referentiel_id": "680ff1b19aaec",
-            "id": "6814200372faf",
-            "matricule": "ODC-2025-0006",
-            "password": "$2y$10$kFsJO7XZPaCzZvAo8whTR.Z90.QO.QDtqKo30OOMBYNtLbwjMPeou",
-            "created_at": "2025-05-02 01:29:39",
+            "prenom": "ODC-2025-0007",
+            "nom": "Gueye",
+            "email": "Fatou",
+            "telephone": "fatou.gueye@gmail.com",
+            "adresse": "775493475",
+            "date_naissance": "Data Science",
+            "lieu_naissance": "En formation",
+            "referentiel_id": "",
             "status": "actif",
-            "first_login": true
+            "imported_data": [
+                "ODC-2025-0007",
+                "Gueye",
+                "Fatou",
+                "fatou.gueye@gmail.com",
+                "775493475",
+                "Data Science",
+                "En formation"
+            ],
+            "missing_fields": [
+                "lieu_naissance"
+            ],
+            "id": "6817f7c26b8a4",
+            "matricule": "ODC-2025-0006",
+            "password": "$2y$10$HV8pgudxx2bYXcDaBq250u4UWnnyTeQIgQrawDft34crmKRwCU1IO",
+            "created_at": "2025-05-04 23:26:58"
+        },
+        {
+            "prenom": "ODC-2025-0009",
+            "nom": "Fall",
+            "email": "Cheikh",
+            "telephone": "cheikh.fall@gmail.com",
+            "adresse": "772402503",
+            "date_naissance": "UI\/UX Design",
+            "lieu_naissance": "Abandonn\u00e9",
+            "referentiel_id": "",
+            "status": "actif",
+            "imported_data": [
+                "ODC-2025-0009",
+                "Fall",
+                "Cheikh",
+                "cheikh.fall@gmail.com",
+                "772402503",
+                "UI\/UX Design",
+                "Abandonn\u00e9"
+            ],
+            "missing_fields": [
+                "lieu_naissance"
+            ],
+            "id": "6817f7c54ff25",
+            "matricule": "ODC-2025-0007",
+            "password": "$2y$10$w9qxw2r8vzuqbgf\/hMuYKObHNe5kk3LSDSgpO5gOps4F\/SaZrFlpG",
+            "created_at": "2025-05-04 23:27:01"
+        },
+        {
+            "prenom": "ODC-2025-0011",
+            "nom": "Ndiaye",
+            "email": "Astou",
+            "telephone": "astou.ndiaye@gmail.com",
+            "adresse": "773755860",
+            "date_naissance": "D\u00e9veloppement Web",
+            "lieu_naissance": "Abandonn\u00e9",
+            "referentiel_id": "",
+            "status": "actif",
+            "imported_data": [
+                "ODC-2025-0011",
+                "Ndiaye",
+                "Astou",
+                "astou.ndiaye@gmail.com",
+                "773755860",
+                "D\u00e9veloppement Web",
+                "Abandonn\u00e9"
+            ],
+            "missing_fields": [
+                "lieu_naissance"
+            ],
+            "id": "6817f7c83a912",
+            "matricule": "ODC-2025-0008",
+            "password": "$2y$10$PwlpcaSz2OoX17J2OV55FuB3XsnbtNWHH7sVv3JI2eeD83Gj7mz6.",
+            "created_at": "2025-05-04 23:27:04"
+        },
+        {
+            "prenom": "ODC-2025-0012",
+            "nom": "Diop",
+            "email": "Ousmane",
+            "telephone": "ousmane.diop@gmail.com",
+            "adresse": "774100485",
+            "date_naissance": "D\u00e9veloppement Web",
+            "lieu_naissance": "En formation",
+            "referentiel_id": "",
+            "status": "actif",
+            "imported_data": [
+                "ODC-2025-0012",
+                "Diop",
+                "Ousmane",
+                "ousmane.diop@gmail.com",
+                "774100485",
+                "D\u00e9veloppement Web",
+                "En formation"
+            ],
+            "missing_fields": [
+                "lieu_naissance"
+            ],
+            "id": "6817f7cb1953c",
+            "matricule": "ODC-2025-0009",
+            "password": "$2y$10$UUixdvjicAHCipVitXBq7OCrGB5XdbACPuPuKJwaI9CAj140Fkdyu",
+            "created_at": "2025-05-04 23:27:07"
+        },
+        {
+            "prenom": "ODC-2025-0015",
+            "nom": "Ndoye",
+            "email": "Ibrahima",
+            "telephone": "ibrahima.ndoye@gmail.com",
+            "adresse": "778683929",
+            "date_naissance": "R\u00e9seau Informatique",
+            "lieu_naissance": "Abandonn\u00e9",
+            "referentiel_id": "",
+            "status": "actif",
+            "imported_data": [
+                "ODC-2025-0015",
+                "Ndoye",
+                "Ibrahima",
+                "ibrahima.ndoye@gmail.com",
+                "778683929",
+                "R\u00e9seau Informatique",
+                "Abandonn\u00e9"
+            ],
+            "missing_fields": [
+                "lieu_naissance"
+            ],
+            "id": "6817f7cdf413b",
+            "matricule": "ODC-2025-0010",
+            "password": "$2y$10$vlrxf\/XmIm8yl6OTshZ9tu1sWClzZ3qNiloPZI2otB9b6is\/T3xwS",
+            "created_at": "2025-05-04 23:27:10"
+        },
+        {
+            "prenom": "Bouba",
+            "nom": "BA",
+            "email": "layesdlc@gmail.com",
+            "telephone": "782929999",
+            "adresse": "GR",
+            "date_naissance": "13\/10\/2000",
+            "lieu_naissance": "Dk",
+            "referentiel_id": "680ff1b19aaec",
+            "photo": "apprenants\/6818b183f3698.jpeg",
+            "id": "6818b183f3c8e",
+            "matricule": "ODC-2025-0009",
+            "password": "$2y$10$eHxlqPs9avbMV3hVlgjYT.SXdZDp3D2OiCKsCc83vwTRAGWRGdL1S",
+            "created_at": "2025-05-05 12:39:32",
+            "status": "actif"
+        },
+        {
+            "prenom": "Di\u00e9",
+            "nom": "Di\u00e9",
+            "email": "dieniang32@gmail.com",
+            "telephone": "764831441",
+            "adresse": "grand yoff arafat N101",
+            "date_naissance": "12\/01\/2001",
+            "lieu_naissance": "Dkar",
+            "referentiel_id": "680ff1b19aaec",
+            "photo": "apprenants\/6818b6f5ee673.png",
+            "id": "6818b6f5eed90",
+            "matricule": "ODC-2025-0010",
+            "password": "$2y$10$U8u7P62Jz\/Gjj6uCX0WCG.Xl.0M1WOY1.u794LVYpeWNYvd6kvSXO",
+            "created_at": "2025-05-05 13:02:46",
+            "status": "actif"
         }
     ]
 }

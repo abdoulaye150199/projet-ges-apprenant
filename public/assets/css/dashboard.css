@@ -68,15 +68,19 @@ body {
 
 /* Sidebar styling */
 .sidebar {
-    width: 250px;
+    width: 280px;
     height: 100vh;
     position: fixed;
     left: 0;
     top: 0;
-    background: white;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+    background: #FFFFFF;
+    color: #333;
+    padding: 1rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.05);
     z-index: 1000;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* Logo section */
@@ -101,7 +105,7 @@ body {
 
 /* Menu items */
 .main-nav {
-    padding: 20px 0;
+    margin-top: 1rem;
 }
 
 .nav-section {
@@ -119,16 +123,18 @@ body {
 .main-nav a {
     display: flex;
     align-items: center;
-    padding: 12px 25px;
-    color: #666;
+    padding: 0.8rem 1rem;
+    color: #64748b;
     text-decoration: none;
-    font-size: 14px;
-    position: relative;
+    border-radius: 12px;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.3rem;
 }
 
 .main-nav a:hover {
-    color: #ff7900;
+    color: #FF7900;
     background: rgba(255, 121, 0, 0.05);
 }
 
@@ -144,14 +150,14 @@ body {
 }
 
 .main-nav .icon {
-    width: 20px;
-    height: 20px;
+    width: 2rem;
+    height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
-    color: #ff7900;
-    font-size: 18px;
+    margin-right: 1rem;
+    border-radius: 8px;
+    color: #FF7900;
     transition: all 0.3s ease;
 }
 
@@ -160,9 +166,9 @@ body {
 }
 
 /* Active menu item */
-.main-nav a.active {
-    color: #ff7900;
-    background: rgba(255, 121, 0, 0.05);
+.main-nav li.active a {
+    background: rgba(255, 121, 0, 0.1);
+    color: #FF7900;
     font-weight: 500;
 }
 
@@ -179,12 +185,13 @@ body {
 
 /* Promotion info in sidebar */
 .promotion {
-    text-align: center;
-    padding: 10px;
+    margin: 0.5rem 1rem;
+    padding: 0.5rem 1rem;
     background: rgba(255, 121, 0, 0.05);
-    margin: 0 15px;
-    border-radius: 10px;
-    margin-top: 6px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    color: #FF7900;
+    transition: all 0.3s ease;
 }
 
 .promotion-title {
@@ -495,7 +502,7 @@ body {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    padding: 20px;
+    padding: 1px;
     background-color: #f7fbfc;
     border-radius: 10px;
 }
@@ -661,44 +668,31 @@ tr:hover {
 }
 
 /* Style du bouton de déconnexion */
-.logout-btn {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: linear-gradient(135deg, #e42e00, #ff5100);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(255, 121, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.logout-btn::before {
-    content: '';
+#bouton {
     position: absolute;
-    top: 0;
+    bottom: 2rem;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #ff5100, #ff7900);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    padding: 0 1.5rem;
+}
+
+.logout-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+    border: none;
+    border-radius: 12px;
+    padding: 0.8rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 121, 0, 0.2);
-}
-
-.logout-btn:hover::before {
-    opacity: 1;
 }
 
 .logout-btn i {
@@ -739,4 +733,260 @@ tr:hover {
     .main-nav a span:not(.icon) {
         display: none;
     }
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: #FFFFFF;
+    color: #333;
+    padding: 1rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Logo Container */
+.logo-container {
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    position: relative;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.logo img {
+    width: 120px;
+    height: auto;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    transition: all 0.3s ease;
+}
+
+.logo:hover img {
+    transform: scale(1.05);
+}
+
+/* Promotion Badge */
+.promotion {
+    margin: 0.5rem 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 121, 0, 0.05);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    color: #FF7900;
+    transition: all 0.3s ease;
+}
+
+.promotion:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Navigation */
+.main-nav {
+    margin-top: 1rem;
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-nav li {
+    margin-bottom: 0.5rem;
+    transform: translateX(-10px);
+    opacity: 0;
+    animation: slideIn 0.5s ease forwards;
+}
+
+.main-nav li:nth-child(n) {
+    animation-delay: calc(0.1s * var(--i, 1));
+}
+
+.main-nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: #64748b;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.3rem;
+}
+
+/* Hover Effect */
+.main-nav a:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transition: left 0.5s ease;
+}
+
+.main-nav a:hover:before {
+    left: 100%;
+}
+
+.main-nav a:hover {
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(8px);
+}
+
+/* Active State */
+.main-nav li.active a {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ff9100;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon Styling */
+.main-nav .icon {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.main-nav a:hover .icon {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(10deg);
+}
+
+/* Menu Labels */
+.main-nav span:not(.icon) {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.main-nav a:hover span:not(.icon) {
+    transform: translateX(5px);
+}
+
+/* Logout Section */
+#bouton {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    width: 100%;
+    padding: 0 1.5rem;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 115, 0, 0.938);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        transform: translateX(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 80px;
+        padding: 1rem 0.5rem;
+    }
+
+    .logo img {
+        width: 40px;
+    }
+
+    .promotion,
+    .main-nav span:not(.icon) {
+        display: none;
+    }
+
+    .main-nav .icon {
+        margin-right: 0;
+    }
+
+    .main-nav a {
+        justify-content: center;
+        padding: 0.8rem;
+    }
+
+    .main-nav a:hover {
+        transform: scale(1.1);
+    }
+
+    #bouton {
+        padding: 0 0.5rem;
+    }
+
+    .logout-btn {
+        padding: 0.8rem;
+        justify-content: center;
+    }
+
+    .logout-btn span:not(.icon) {
+        display: none;
+    }
+}
+
+/* Custom Scrollbar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
 }

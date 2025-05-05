@@ -332,52 +332,47 @@ function unassign_referentiel_process() {
 
 // Traitement de l'affectation de référentiels à une promotion
 function assign_referentiels_process() {
-    global $model, $session_services;
+    global $model, $session_services, $error_messages, $success_messages;
     
-    try {
-        check_profile(Enums\ADMIN);
-        
-        $current_promotion = $model['get_current_promotion']();
-        if (!$current_promotion) {
-            $session_services['set_flash_message']('info', 'Aucune promotion active');
-            redirect('?page=promotions');
-            return;
-        }
-        
-        // Récupérer les référentiels existants
-        $existing_referentiels = $current_promotion['referentiels'] ?? [];
-        
-        // Récupérer les nouveaux référentiels sélectionnés
-        $selected_referentiels = $_POST['referentiels'] ?? [];
-        if (empty($selected_referentiels)) {
-            $session_services['set_flash_message']('info', 'Aucun référentiel sélectionné');
-            redirect('?page=assign-referentiels');
-            return;
-        }
-        
-        // S'assurer que selected_referentiels est un tableau
-        if (!is_array($selected_referentiels)) {
-            $selected_referentiels = [$selected_referentiels];
-        }
-        
-        // Fusionner les référentiels existants avec les nouveaux
-        $all_referentiels = array_merge($existing_referentiels, $selected_referentiels);
-        
-        // Assigner tous les référentiels
-        $result = $model['assign_referentiels_to_promotion']($current_promotion['id'], $all_referentiels);
-        
-        if ($result) {
-            $session_services['set_flash_message']('success', 'Référentiels assignés avec succès');
-        } else {
-            $session_services['set_flash_message']('error', 'Erreur lors de l\'assignation des référentiels');
-        }
-        
-        redirect('?page=assign-referentiels');
-        
-    } catch (Exception $e) {
-        $session_services['set_flash_message']('error', 'Une erreur est survenue');
-        redirect('?page=referentiels');
+    // Vérification des droits d'accès (Admin uniquement)
+    check_profile(Enums\ADMIN);
+    
+    // Récupération de la promotion courante
+    $current_promotion = $model['get_current_promotion']();
+    
+    if (!$current_promotion) {
+        $session_services['set_flash_message']('info', 'Aucune promotion active. Veuillez d\'abord activer une promotion.');
+        redirect('?page=promotions');
+        return;
     }
+    
+    // Vérifier si la promotion est en cours ou terminée
+    if ($current_promotion['etat'] === 'terminee') {
+        $session_services['set_flash_message']('warning', 'L\'assignation n\'est possible qu\'avec la promotion en cours.');
+        redirect('?page=referentiels');
+        return;
+    }
+    
+    // Le reste du code reste inchangé
+    // Récupération des référentiels sélectionnés
+    $selected_referentiels = $_POST['referentiels'] ?? [];
+    
+    if (empty($selected_referentiels)) {
+        $session_services['set_flash_message']('info', 'Aucun référentiel sélectionné.');
+        redirect('?page=assign-referentiels');
+        return;
+    }
+    
+    // Affectation des référentiels à la promotion
+    $result = $model['assign_referentiels_to_promotion']($current_promotion['id'], $selected_referentiels);
+    
+    if ($result) {
+        $session_services['set_flash_message']('success', 'Référentiel(s) assigné(s) avec succès');
+    } else {
+        $session_services['set_flash_message']('danger', 'Erreur lors de l\'assignation des référentiels');
+    }
+    
+    redirect('?page=assign-referentiels');
 }
 
 function assign_referentiels_to_promotion() {

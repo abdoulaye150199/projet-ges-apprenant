@@ -131,7 +131,7 @@ if (isset($_GET['auto_submit']) && $_GET['auto_submit'] === 'list_filters') {
                     <button type="submit" class="search-button">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                             <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            <line x1="21" y1="21" x2="16.65"></line>
                         </svg>
                     </button>
                 </div>
@@ -250,9 +250,9 @@ if (isset($_GET['auto_submit']) && $_GET['auto_submit'] === 'list_filters') {
                     
                     <div class="card-content">
                         <div class="promo-info">
-                            <img src="/assets/images/uploads/promotions/<?php echo htmlspecialchars($promotion['image']); ?>" 
-                                alt="<?php echo htmlspecialchars($promotion['name']); ?>" 
-                                class="promotion-avatar">
+                            <img src="<?= !empty($promotion['image']) ? ltrim($promotion['image'], '/') : 'assets/images/default-promotion.jpg' ?>"
+                                 alt="<?= htmlspecialchars($promotion['name']) ?>"
+                                 class="promotion-avatar">
                             <div class="promotion-details">
                                 <h3 class="promotion-title"><?php echo htmlspecialchars($promotion['name']); ?></h3>
                                 <div class="promotion-date">
@@ -309,8 +309,8 @@ if (isset($_GET['auto_submit']) && $_GET['auto_submit'] === 'list_filters') {
         <?php foreach ($promotions as $promotion) { ?>
         <div class="list-row" data-status="<?php echo $promotion['status']; ?>">
             <div class="list-cell photo-cell">
-                <img src="assets/images/uploads/promotions/<?php echo htmlspecialchars($promotion['image']); ?>" 
-                     alt="<?php echo htmlspecialchars($promotion['name']); ?>" 
+                <img src="<?= !empty($promotion['image']) ? ltrim($promotion['image'], '/') : 'assets/images/default-promotion.jpg' ?>"
+                     alt="<?= htmlspecialchars($promotion['name']) ?>"
                      class="promotion-avatar-list">
             </div>
             <div class="list-cell promotion-cell"><?php echo htmlspecialchars($promotion['name']); ?></div>

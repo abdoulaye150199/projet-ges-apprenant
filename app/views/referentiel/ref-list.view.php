@@ -43,9 +43,6 @@
     <div class="actions-group">
         <!-- Pour le dropdown de téléchargement -->
         <div class="dropdown">
-            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                <i class="fas fa-download"></i> Télécharger la liste
-            </button>
             <ul class="dropdown-menu">
                 <li>
                     <a class="dropdown-item pdf" href="?page=download-list&format=pdf">

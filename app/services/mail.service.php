@@ -199,51 +199,116 @@ function send_welcome_email($user, $temp_password) {
  */
 function send_apprenant_credentials($apprenant_data, $temp_password) {
     try {
+        $config = require __DIR__ . '/../config/mail.config.php';
+        $mail = new PHPMailer(true);
+
+        // Configuration du serveur
+        $mail->isSMTP();
+        $mail->Host = $config['smtp']['host'];
+        $mail->SMTPAuth = true;
+        $mail->Username = $config['smtp']['username'];
+        $mail->Password = $config['smtp']['password'];
+        $mail->SMTPSecure = $config['smtp']['encryption'];
+        $mail->Port = $config['smtp']['port'];
+        $mail->CharSet = 'UTF-8';
+
+        // Destinataires
+        $mail->setFrom($config['smtp']['from_email'], $config['smtp']['from_name']);
+        $mail->addAddress($apprenant_data['email']);
+
+        // Générer l'URL de connexion
         $login_url = "http://" . $_SERVER['HTTP_HOST'] . "?page=login";
-        
+
+        // Contenu
+        $mail->isHTML(true);
+        $mail->Subject = 'Vos identifiants de connexion - Sonatel Academy';
+
         $message = "
-        <div class='container'>
-            <div class='header'>
-                <h1>Bienvenue à Sonatel Academy</h1>
-            </div>
-            <div class='content'>
-                <p>Bonjour " . htmlspecialchars($apprenant_data['prenom']) . " " . htmlspecialchars($apprenant_data['nom']) . ",</p>
-                
-                <p>Votre compte a été créé avec succès. Voici vos identifiants de connexion :</p>
-                
-                <div class='credentials-box'>
-                    <h3>Vos identifiants de connexion</h3>
-                    <div class='credentials-item'>
-                        <strong>Matricule :</strong> " . htmlspecialchars($apprenant_data['matricule']) . "
-                    </div>
-                    <div class='credentials-item'>
-                        <strong>Email :</strong> " . htmlspecialchars($apprenant_data['email']) . "
-                    </div>
-                    <div class='credentials-item'>
-                        <strong>Mot de passe temporaire :</strong> " . htmlspecialchars($temp_password) . "
-                    </div>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                .header { background: #ff7900; color: white; padding: 20px; text-align: center; }
+                .content { background: #fff; padding: 20px; border: 1px solid #ddd; }
+                .credentials { 
+                    background: #f5f5f5; 
+                    padding: 15px; 
+                    margin: 20px 0; 
+                    border-radius: 4px;
+                    border-left: 4px solid #ff7900;
+                }
+                .warning {
+                    background: #fff3cd;
+                    color: #856404;
+                    padding: 15px;
+                    margin: 20px 0;
+                    border-radius: 4px;
+                    border-left: 4px solid #ffeeba;
+                }
+                .button {
+                    display: inline-block;
+                    background-color: #ff7900;
+                    color: white !important;
+                    padding: 12px 24px;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    margin: 20px 0;
+                    text-align: center;
+                }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <div class='header'>
+                    <h1>Bienvenue à Sonatel Academy</h1>
                 </div>
+                <div class='content'>
+                    <p>Bonjour {$apprenant_data['prenom']} {$apprenant_data['nom']},</p>
+                    
+                    <p>Votre compte a été créé avec succès. Voici vos informations de connexion :</p>
+                    
+                    <div class='credentials'>
+                        <h3>Vos identifiants</h3>
+                        <p><strong>Matricule :</strong> {$apprenant_data['matricule']}</p>
+                        <p><strong>Email :</strong> {$apprenant_data['email']}</p>
+                        <p><strong>Mot de passe temporaire :</strong> {$temp_password}</p>
+                    </div>
 
-                <div class='warning-box'>
-                    <h3>⚠️ Important</h3>
-                    <p>Pour des raisons de sécurité, vous devrez changer votre mot de passe lors de votre première connexion.</p>
+                    <div class='warning'>
+                        <h3>⚠️ Important - Action requise</h3>
+                        <p>Pour des raisons de sécurité, vous devez changer votre mot de passe lors de votre première connexion.</p>
+                        <p>Cette étape est obligatoire pour accéder à votre compte.</p>
+                    </div>
+
+                    <center>
+                        <a href='{$login_url}' class='button'>
+                            Se connecter maintenant
+                        </a>
+                    </center>
+
+                    <p>Pour vous connecter, suivez ces étapes :</p>
+                    <ol>
+                        <li>Cliquez sur le bouton ci-dessus ou rendez-vous sur la page de connexion</li>
+                        <li>Utilisez votre matricule ou email et le mot de passe temporaire</li>
+                        <li>Vous serez automatiquement redirigé vers la page de changement de mot de passe</li>
+                        <li>Choisissez un nouveau mot de passe sécurisé</li>
+                    </ol>
+
+                    <p style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;'>
+                        Cordialement,<br>
+                        L'équipe Sonatel Academy
+                    </p>
                 </div>
-
-                <div style='text-align: center;'>
-                    <a href='" . $login_url . "' class='button'>Se connecter maintenant</a>
-                </div>
-                
-                <p>Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :</p>
-                <small>" . $login_url . "</small>
             </div>
-            
-            <div class='footer'>
-                <p>Cordialement,<br>L'équipe Sonatel Academy</p>
-            </div>
-        </div>";
+        </body>
+        </html>";
 
-        return send_mail($apprenant_data['email'], 'Vos identifiants de connexion - Sonatel Academy', $message);
-        
+        $mail->Body = $message;
+        $mail->AltBody = strip_tags($message);
+
+        return $mail->send();
     } catch (Exception $e) {
         error_log("Erreur d'envoi de mail: " . $e->getMessage());
         return false;
@@ -286,145 +351,4 @@ function create_mail_template($apprenant, $temp_password, $login_url) {
         </div>
     </body>
     </html>";
-}
-
-function send_mail($to, $subject, $body) {
-    try {
-        $config = require __DIR__ . '/../config/mail.config.php';
-        $mail = new PHPMailer(true);
-
-        // Configuration SMTP avec debug
-        $mail->SMTPDebug = 2; // Active le debugging
-        $mail->Debugoutput = function($str, $level) {
-            error_log("SMTP DEBUG: $str");
-        };
-        
-        $mail->isSMTP();
-        $mail->Host = $config['smtp']['host'];
-        $mail->SMTPAuth = true;
-        $mail->Username = $config['smtp']['username'];
-        $mail->Password = $config['smtp']['password'];
-        $mail->SMTPSecure = $config['smtp']['encryption'];
-        $mail->Port = $config['smtp']['port'];
-        $mail->CharSet = 'UTF-8';
-
-        // Configuration de l'email
-        $mail->setFrom($config['smtp']['from_email'], $config['smtp']['from_name']);
-        $mail->addAddress($to);
-        $mail->isHTML(true);
-        
-        $mail->Subject = $subject;
-        
-        // Ajout du CSS amélioré
-        $css = "
-        <style>
-            :root {
-                --primary-color: #ff7900;
-                --secondary-color: #004787;
-                --background-color: #f5f7fa;
-                --text-color: #333333;
-                --border-color: #e1e4e8;
-            }
-            
-            body {
-                font-family: 'Arial', sans-serif;
-                line-height: 1.6;
-                background-color: var(--background-color);
-                color: var(--text-color);
-                margin: 0;
-                padding: 0;
-            }
-            
-            .container {
-                max-width: 600px;
-                margin: 20px auto;
-                background: white;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            
-            .header {
-                background: var(--primary-color);
-                color: white;
-                padding: 30px;
-                text-align: center;
-                border-radius: 10px 10px 0 0;
-            }
-            
-            .header h1 {
-                margin: 0;
-                font-size: 28px;
-                font-weight: 600;
-            }
-            
-            .content {
-                padding: 30px;
-            }
-            
-            .credentials-box {
-                background: #fff;
-                border: 1px solid var(--border-color);
-                border-left: 4px solid var(--primary-color);
-                border-radius: 5px;
-                padding: 20px;
-                margin: 20px 0;
-            }
-            
-            .credentials-item {
-                margin: 10px 0;
-                padding: 10px;
-                background: #f8f9fa;
-                border-radius: 4px;
-            }
-            
-            .warning-box {
-                background: #fff3e0;
-                border-left: 4px solid #ff9800;
-                padding: 15px;
-                margin: 20px 0;
-                border-radius: 4px;
-            }
-            
-            .button {
-                display: inline-block;
-                background: var(--primary-color);
-                color: white;
-                padding: 12px 30px;
-                text-decoration: none;
-                border-radius: 5px;
-                font-weight: bold;
-                margin: 20px 0;
-                text-align: center;
-                transition: background-color 0.3s ease;
-            }
-            
-            .button:hover {
-                background: #e66800;
-            }
-            
-            .footer {
-                text-align: center;
-                padding: 20px;
-                color: #666;
-                border-top: 1px solid var(--border-color);
-            }
-        </style>
-        ";
-        
-        // Ajout du CSS au corps du message
-        $mail->Body = $css . $body;
-        
-        // Version texte alternatif
-        $mail->AltBody = strip_tags($body);
-
-        if(!$mail->send()) {
-            error_log("Erreur d'envoi: " . $mail->ErrorInfo);
-            return false;
-        }
-        
-        return true;
-    } catch (Exception $e) {
-        error_log("Exception: " . $e->getMessage());
-        return false;
-    }
 }

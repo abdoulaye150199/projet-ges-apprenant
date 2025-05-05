@@ -117,15 +117,19 @@
                         ?>
                         <tr>
                             <td>
-                                <img src="<?= !empty($apprenant['photo']) ? htmlspecialchars($apprenant['photo']) : 'assets/images/default-profile.png' ?>" 
-                                     class="rounded-circle"
+                                <?php 
+                                $photoPath = !empty($apprenant['photo']) && file_exists($apprenant['photo'])
+                                    ? $apprenant['photo']
+                                    : 'public/assets/images/profile-default.png';
+                                ?>
+                                <img src="<?= htmlspecialchars($photoPath) ?>"
+                                     class="rounded-circle student-avatar"
                                      width="40" 
                                      height="40"
-                                     alt="Photo de profil">
+                                     alt="Photo de <?= htmlspecialchars($apprenant['prenom']) ?>"
+                                     onerror="this.onerror=null; this.src='public/assets/images/profile-default.png';">
                             </td>
-                            <td class="student-matricule">
-                                <?= htmlspecialchars($apprenant['matricule'] ?? 'N/A') ?>
-                            </td>
+                            <td><?= htmlspecialchars($apprenant['matricule']) ?></td>
                             <td><?= htmlspecialchars($apprenant['prenom'] . ' ' . $apprenant['nom']) ?></td>
                             <td><?= htmlspecialchars($apprenant['adresse']) ?></td>
                             <td><?= htmlspecialchars($apprenant['telephone']) ?></td>

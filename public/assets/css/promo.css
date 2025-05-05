@@ -9,6 +9,7 @@
 body {
     background-color: #f8fafc;
     padding: 20px;
+    overflow-x: hidden;
 }
 
 .container {
@@ -679,4 +680,230 @@ body {
     .view-button::before {
         margin: 0;
     }
+}
+
+/* Styles pour la liste des promotions */
+.promotions-container {
+    padding: 20px;
+}
+
+/* Style des cartes de promotion */
+.promotion-card {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 121, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.promotion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255, 121, 0, 0.15);
+}
+
+/* Effet de brillance au hover */
+.promotion-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 121, 0, 0) 0%,
+        rgba(255, 121, 0, 0.1) 50%,
+        rgba(255, 121, 0, 0) 100%
+    );
+    transform: rotate(45deg);
+    transition: all 0.8s ease;
+    opacity: 0;
+}
+
+.promotion-card:hover::after {
+    left: 100%;
+    opacity: 1;
+}
+
+/* En-tête de la carte */
+.promotion-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.promotion-title {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.promotion-card:hover .promotion-title {
+    color: #FF7900;
+}
+
+/* Badges de statut */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.status-active {
+    background: rgba(52, 211, 153, 0.1);
+    color: #059669;
+}
+
+.status-inactive {
+    background: rgba(239, 68, 68, 0.1);
+    color: #DC2626;
+}
+
+.promotion-card:hover .status-active {
+    background: rgba(52, 211, 153, 0.2);
+}
+
+.promotion-card:hover .status-inactive {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* Corps de la carte */
+.promotion-body {
+    padding: 20px;
+}
+
+/* Actions buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.promotion-card:hover .action-buttons {
+    opacity: 1;
+}
+
+.action-btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-edit {
+    background: rgba(255, 121, 0, 0.1);
+    color: #FF7900;
+}
+
+.btn-edit:hover {
+    background: #FF7900;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #DC2626;
+}
+
+.btn-delete:hover {
+    background: #DC2626;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Filtres et recherche */
+.filter-container {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.search-input {
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 15px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #FF7900;
+    box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.1);
+}
+
+/* View toggle buttons */
+.view-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #f8f9fa;
+    color: #64748b;
+    transition: all 0.3s ease;
+}
+
+.view-button:hover {
+    background: rgba(255, 121, 0, 0.1);
+    color: #FF7900;
+}
+
+.view-button.active {
+    background: #FF7900;
+    color: white;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: white;
+    color: #64748b;
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.pagination-button:hover {
+    background: rgba(255, 121, 0, 0.1);
+    color: #FF7900;
+    border-color: #FF7900;
+    transform: translateY(-2px);
+}
+
+.pagination-button.active {
+    background: #FF7900;
+    color: white;
+    border-color: #FF7900;
+}
+
+/* Animation pour les changements de vue */
+.promotion-list {
+    transition: opacity 0.3s ease;
+}
+
+.promotion-list.fade-enter {
+    opacity: 0;
+}
+
+.promotion-list.fade-enter-active {
+    opacity: 1;
 }

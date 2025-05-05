@@ -30,6 +30,8 @@ $routes = [
     'toggle-promotion-status' => 'App\Controllers\toggle_promotion_status',
     'promotion' => 'App\Controllers\promotion_page',
     'add_promotion_form' => 'App\Controllers\add_promotion_form',
+    'add_promotion' => 'App\Controllers\add_promotion',
+    'toggle_promotion' => 'App\Controllers\toggle_promotion_status',
     'search_referentiels' => 'App\Controllers\search_referentiels',
     
     // Routes pour les référentiels
@@ -44,6 +46,12 @@ $routes = [
     // Route par défaut pour le tableau de bord
     'dashboard' => 'App\Controllers\dashboard',
     
+    // Route pour les erreurs
+    'forbidden' => 'App\Controllers\forbidden',
+    
+    // Route par défaut (page non trouvée)
+    '404' => 'App\Controllers\not_found',
+
     // Routes pour les apprenants
     'apprenants' => 'App\Controllers\list_apprenants',
     'add-apprenant' => 'App\Controllers\add_apprenant_form',
@@ -57,11 +65,46 @@ $routes = [
     'import-apprenants' => 'App\Controllers\import_apprenants_form',
     'import-apprenants-process' => 'App\Controllers\import_apprenants_process',
     'apprenant-profile' => 'App\Controllers\show_apprenant_profile',
-    
-    // Route pour les erreurs
-    'forbidden' => 'App\Controllers\forbidden',
-    '404' => 'App\Controllers\not_found'
+
+    // Routes pour les templates
+    'fill-template' => 'App\Controllers\fill_template_form',
+    'fill-template-process' => 'App\Controllers\fill_template_process',
 ];
+
+// Liste des pages qui ne nécessitent pas d'authentification
+$public_pages = ['login', 'login-process', 'forgot-password', 'forgot-password-process', 'reset-password', 'reset-password-process'];
+
+/**
+ * Fonction principale de gestion des requêtes
+ * Cette fonction démarre la session et route la requête vers le contrôleur approprié
+ */
+function handle_request() {
+    global $routes, $public_pages;
+    
+    // Démarrer la session
+    global $session_services;
+    $session_services['start_session']();
+    
+    // Récupération de la page demandée
+    $page = isset($_GET['page']) ? $_GET['page'] : 'login';
+    
+    error_log("Page demandée : $page, Utilisateur connecté : " . ($session_services['is_logged_in']() ? 'Oui' : 'Non'));
+    
+    // Si l'utilisateur est connecté et qu'il essaie d'accéder à la page de connexion, rediriger vers le dashboard
+    if ($session_services['is_logged_in']() && in_array($page, $public_pages)) {
+        header('Location: ?page=dashboard');
+        exit;
+    }
+    
+    // Vérifier si la page nécessite une authentification
+    if (!$session_services['is_logged_in']() && !in_array($page, $public_pages)) {
+        header('Location: ?page=login');
+        exit;
+    }
+    
+    // Routage vers le contrôleur approprié
+    route($page);
+}
 
 /**
  * Fonction de routage qui exécute le contrôleur correspondant à la page demandée

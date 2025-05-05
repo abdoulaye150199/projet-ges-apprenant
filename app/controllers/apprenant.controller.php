@@ -7,7 +7,6 @@ require_once __DIR__ . '/../services/mail.service.php';
 require_once __DIR__ . '/../middleware/auth.middleware.php';  
 use App\Services\Export;
 use App\Middleware;  // Add this line
-use function App\Middleware\check_apprenant_auth;  // Import the specific function
 
 require_once __DIR__ . '/controller.php';
 require_once __DIR__ . '/../models/model.php';
@@ -150,50 +149,69 @@ function add_apprenant_form() {
 }
 
 function add_apprenant_process() {
-    global $model, $session_services;
+    global $model, $validator_services, $session_services, $file_services;
     
     try {
         check_auth();
         
-        // Validation des données du formulaire
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            redirect('?page=add-apprenant');
+            return;
+        }
+
         $apprenant_data = [
-            'nom' => $_POST['nom'] ?? '',
             'prenom' => $_POST['prenom'] ?? '',
+            'nom' => $_POST['nom'] ?? '',
             'email' => $_POST['email'] ?? '',
-            'date_naissance' => $_POST['date_naissance'] ?? '',
             'telephone' => $_POST['telephone'] ?? '',
-            'referentiel_id' => $_POST['referentiel_id'] ?? null
+            'adresse' => $_POST['adresse'] ?? '',
+            'date_naissance' => $_POST['date_naissance'] ?? '',
+            'lieu_naissance' => $_POST['lieu_naissance'] ?? '',
+            'referentiel_id' => $_POST['referentiel_id'] ?? ''
         ];
-        
-        // Validation des champs requis
-        $required_fields = ['nom', 'prenom', 'email'];
-        foreach ($required_fields as $field) {
-            if (empty($apprenant_data[$field])) {
-                throw new Exception("Le champ $field est requis");
+
+        // Gérer l'upload de la photo
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            try {
+                $photo_path = $file_services['handle_upload']($_FILES['photo'], 'apprenants');
+                if ($photo_path) {
+                    $apprenant_data['photo'] = $photo_path;
+                }
+            } catch (Exception $e) {
+                $session_services['set_flash_message']('error', 'Erreur lors de l\'upload de la photo: ' . $e->getMessage());
+                redirect('?page=add-apprenant');
+                return;
             }
         }
+
+        // Validation avec les fichiers optionnels
+        $validation_result = validate_apprenant_data($apprenant_data, $_FILES);
         
-        // Ajouter l'apprenant
+        if (!$validation_result['valid']) {
+            $session_services['set_flash_message']('error', implode('<br>', $validation_result['errors']));
+            redirect('?page=add-apprenant');
+            return;
+        }
+
+        // Ajout de l'apprenant
         $result = $model['add_apprenant']($apprenant_data);
-        
+
         if ($result['success']) {
             $message = 'Apprenant ajouté avec succès';
             if ($result['mail_sent']) {
                 $message .= ' et les identifiants ont été envoyés par email';
             } else {
                 $message .= ' mais l\'envoi du mail a échoué';
-                error_log('Identifiants : Matricule=' . $result['apprenant']['matricule'] . 
-                         ', Mot de passe=' . $result['plain_password']);
             }
             $session_services['set_flash_message']('success', $message);
+            redirect('?page=apprenants');
         } else {
-            throw new Exception($result['message']);
+            $session_services['set_flash_message']('error', $result['message']);
+            redirect('?page=add-apprenant');
         }
-        
-        redirect('?page=apprenants');
-        
+
     } catch (Exception $e) {
-        $session_services['set_flash_message']('error', $e->getMessage());
+        $session_services['set_flash_message']('error', 'Une erreur est survenue');
         redirect('?page=add-apprenant');
     }
 }
@@ -329,33 +347,32 @@ function show_apprenant_details() {
 }
 
 function show_apprenant_profile() {
-    global $model, $session_services;
+    global $model;
     
-    try {
-        // Now we can use check_apprenant_auth() directly
-        $user = check_apprenant_auth();
-        
-        // Rest of the function remains the same...
-        $apprenant = $model['get_apprenant_by_id']($user['id']);
-        if (!$apprenant) {
-            throw new \Exception('Apprenant non trouvé');
-        }
-        
-        // Récupérer les données supplémentaires nécessaires
-        $referentiel = $model['get_referentiel_by_id']($apprenant['referentiel_id'] ?? '');
-        $modules = $model['get_apprenant_modules']($apprenant['id']);
-        
-        // Rendre la vue avec le layout apprenant
-        render('apprenant.layout.view.php', 'apprenants/profile.view.php', [
-            'apprenant' => $apprenant,
-            'referentiel' => $referentiel,
-            'modules' => $modules
-        ]);
-        
-    } catch (\Exception $e) {
-        $session_services['set_flash_message']('error', $e->getMessage());
+    $user = Middleware\check_apprenant_auth();
+    
+    $apprenant = $model['get_apprenant_by_id']($user['id']);
+    if (!$apprenant) {
         redirect('?page=login');
     }
+    
+    // Récupérer les informations supplémentaires
+    $referentiel = null;
+    if (isset($apprenant['referentiel_id'])) {
+        $referentiel = $model['get_referentiel_by_id']($apprenant['referentiel_id']);
+    }
+    
+    $promotion = null;
+    if (isset($apprenant['promotion_id'])) {
+        $promotion = $model['get_promotion_by_id']($apprenant['promotion_id']);
+    }
+    
+    // Utiliser le layout apprenant au lieu du layout admin
+    render('apprenant.layout.view.php', 'apprenants/profile.view.php', [
+        'apprenant' => $apprenant,
+        'referentiel' => $referentiel,
+        'promotion' => $promotion
+    ]);
 }
 
 function exclude_apprenant() {
@@ -697,5 +714,87 @@ function download_template() {
     } catch (\Exception $e) {
         error_log('Erreur lors de la génération du template: ' . $e->getMessage());
         redirect('?page=import-apprenants');
+    }
+}
+
+function fill_template_form() {
+    global $model, $session_services;
+    
+    try {
+        check_auth();
+        
+        // Récupérer le nombre d'apprenants demandé
+        $num_rows = isset($_GET['num_rows']) ? max(1, min(50, (int)$_GET['num_rows'])) : 5;
+        
+        // Récupérer les référentiels
+        $referentiels = $model['get_all_referentiels']();
+        
+        render('admin.layout.view.php', 'apprenants/fill-template.view.php', [
+            'title' => 'Remplir la liste des apprenants',
+            'num_rows' => $num_rows,
+            'referentiels' => $referentiels,
+            'active_menu' => 'apprenants'
+        ]);
+        
+    } catch (Exception $e) {
+        $session_services['set_flash_message']('error', $e->getMessage());
+        redirect('?page=apprenants');
+    }
+}
+
+function fill_template_process() {
+    global $model, $session_services, $file_services;
+    
+    try {
+        check_auth();
+        
+        if (!isset($_POST['apprenants'])) {
+            throw new Exception('Aucune donnée reçue');
+        }
+        
+        $apprenants = $_POST['apprenants'];
+        $success_count = 0;
+        
+        foreach ($apprenants as $index => $apprenant) {
+            if (!empty($apprenant['prenom']) && !empty($apprenant['nom'])) {
+                // Valider la date
+                if (!empty($apprenant['date_naissance'])) {
+                    if (!preg_match('/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/', $apprenant['date_naissance'])) {
+                        continue; // Passer à l'itération suivante si la date n'est pas valide
+                    }
+                    // Convertir la date au format MySQL
+                    $date = \DateTime::createFromFormat('d/m/Y', $apprenant['date_naissance']);
+                    if ($date) {
+                        $apprenant['date_naissance'] = $date->format('Y-m-d');
+                    }
+                }
+                
+                // Gérer la photo si elle existe
+                if (isset($_FILES['photos'][$index]) && $_FILES['photos'][$index]['error'] === UPLOAD_ERR_OK) {
+                    $photo = $_FILES['photos'][$index];
+                    $photo_path = $file_services['handle_upload']($photo, 'apprenants');
+                    if ($photo_path) {
+                        $apprenant['photo'] = $photo_path;
+                    }
+                }
+                
+                $result = $model['add_apprenant']($apprenant);
+                if ($result['success']) {
+                    $success_count++;
+                }
+            }
+        }
+        
+        if ($success_count > 0) {
+            $session_services['set_flash_message']('success', "$success_count apprenants ajoutés avec succès");
+        } else {
+            $session_services['set_flash_message']('error', "Aucun apprenant n'a été ajouté");
+        }
+        
+        redirect('?page=apprenants');
+        
+    } catch (Exception $e) {
+        $session_services['set_flash_message']('error', $e->getMessage());
+        redirect('?page=fill-template');
     }
 }
