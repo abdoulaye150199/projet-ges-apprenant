@@ -10,69 +10,114 @@ require_once __DIR__ . '/../controllers/apprenant.controller.php';
 
 use App\Controllers;
 
-// Définition de toutes les routes disponibles avec leur fonction controller associée
+// Définition de l'enum pour les routes
+enum RouteEnum: string {
+    // Auth routes
+    case LOGIN = 'login';
+    case LOGIN_PROCESS = 'login-process';
+    case LOGOUT = 'logout';
+    case CHANGE_PASSWORD = 'change-password';
+    case CHANGE_PASSWORD_PROCESS = 'change-password-process';
+    case FORGOT_PASSWORD = 'forgot-password';
+    case FORGOT_PASSWORD_PROCESS = 'forgot-password-process';
+    case RESET_PASSWORD = 'reset-password';
+    case RESET_PASSWORD_PROCESS = 'reset-password-process';
+
+    // Promotion routes
+    case PROMOTIONS = 'promotions';
+    case ADD_PROMOTION = 'add-promotion';
+    case ADD_PROMOTION_PROCESS = 'add-promotion-process';
+    case TOGGLE_PROMOTION_STATUS = 'toggle-promotion-status';
+    case PROMOTION = 'promotion';
+    case SEARCH_REFERENTIELS = 'search_referentiels';
+
+    // Referentiel routes
+    case REFERENTIELS = 'referentiels';
+    case ALL_REFERENTIELS = 'all-referentiels';
+    case ADD_REFERENTIEL = 'add-referentiel';
+    case ADD_REFERENTIEL_PROCESS = 'add-referentiel-process';
+    case ASSIGN_REFERENTIELS = 'assign-referentiels';
+    case ASSIGN_REFERENTIELS_PROCESS = 'assign-referentiels-process';
+    case UNASSIGN_REFERENTIEL = 'unassign-referentiel';
+
+    // Dashboard route
+    case DASHBOARD = 'dashboard';
+
+    // Error routes
+    case FORBIDDEN = 'forbidden';
+    case NOT_FOUND = '404';
+
+    // Apprenant routes
+    case APPRENANTS = 'apprenants';
+    case ADD_APPRENANT = 'add-apprenant';
+    case ADD_APPRENANT_PROCESS = 'add-apprenant-process';
+    case EDIT_APPRENANT = 'edit-apprenant';
+    case EDIT_APPRENANT_PROCESS = 'edit-apprenant-process';
+    case DELETE_APPRENANT = 'delete-apprenant';
+    case DOWNLOAD_LIST = 'download-list';
+    case APPRENANT_DETAILS = 'apprenant-details';
+    case EXCLUDE_APPRENANT = 'exclude-apprenant';
+    case IMPORT_APPRENANTS = 'import-apprenants';
+    case IMPORT_APPRENANTS_PROCESS = 'import-apprenants-process';
+    case APPRENANT_PROFILE = 'apprenant-profile';
+
+    // Template routes
+    case FILL_TEMPLATE = 'fill-template';
+    case FILL_TEMPLATE_PROCESS = 'fill-template-process';
+}
+
+// Mapping des routes vers les contrôleurs
 $routes = [
-    // Routes pour l'authentification
-    'login' => 'App\Controllers\login_page',
-    'login-process' => 'App\Controllers\login_process',
-    'logout' => 'App\Controllers\logout',
-    'change-password' => 'App\Controllers\change_password_page',
-    'change-password-process' => 'App\Controllers\change_password_process',
-    'forgot-password' => 'App\Controllers\forgot_password_page',
-    'forgot-password-process' => 'App\Controllers\forgot_password_process',
-    'reset-password' => 'App\Controllers\reset_password_page',
-    'reset-password-process' => 'App\Controllers\reset_password_process',
-    
-    // Routes pour les promotions
-    'promotions' => 'App\Controllers\list_promotions',
-    'add-promotion' => 'App\Controllers\add_promotion_form',
-    'add-promotion-process' => 'App\Controllers\add_promotion_process',
-    'toggle-promotion-status' => 'App\Controllers\toggle_promotion_status',
-    'promotion' => 'App\Controllers\promotion_page',
-    'add_promotion_form' => 'App\Controllers\add_promotion_form',
-    'add_promotion' => 'App\Controllers\add_promotion',
-    'toggle_promotion' => 'App\Controllers\toggle_promotion_status',
-    'search_referentiels' => 'App\Controllers\search_referentiels',
-    
-    // Routes pour les référentiels
-    'referentiels' => 'App\Controllers\list_referentiels',
-    'all-referentiels' => 'App\Controllers\list_all_referentiels',
-    'add-referentiel' => 'App\Controllers\add_referentiel_form',
-    'add-referentiel-process' => 'App\Controllers\add_referentiel_process',
-    'assign-referentiels' => 'App\Controllers\assign_referentiels_form',
-    'assign-referentiels-process' => 'App\Controllers\assign_referentiels_process',
-    'unassign-referentiel' => 'App\Controllers\unassign_referentiel_process',
-    
-    // Route par défaut pour le tableau de bord
-    'dashboard' => 'App\Controllers\dashboard',
-    
-    // Route pour les erreurs
-    'forbidden' => 'App\Controllers\forbidden',
-    
-    // Route par défaut (page non trouvée)
-    '404' => 'App\Controllers\not_found',
-
-    // Routes pour les apprenants
-    'apprenants' => 'App\Controllers\list_apprenants',
-    'add-apprenant' => 'App\Controllers\add_apprenant_form',
-    'add-apprenant-process' => 'App\Controllers\add_apprenant_process',
-    'edit-apprenant' => 'App\Controllers\edit_apprenant_form',
-    'edit-apprenant-process' => 'App\Controllers\edit_apprenant_process',
-    'delete-apprenant' => 'App\Controllers\delete_apprenant_process',
-    'download-list' => 'App\Controllers\download_list',
-    'apprenant-details' => 'App\Controllers\show_apprenant_details',
-    'exclude-apprenant' => 'App\Controllers\exclude_apprenant',
-    'import-apprenants' => 'App\Controllers\import_apprenants_form',
-    'import-apprenants-process' => 'App\Controllers\import_apprenants_process',
-    'apprenant-profile' => 'App\Controllers\show_apprenant_profile',
-
-    // Routes pour les templates
-    'fill-template' => 'App\Controllers\fill_template_form',
-    'fill-template-process' => 'App\Controllers\fill_template_process',
+    RouteEnum::LOGIN->value => 'App\Controllers\login_page',
+    RouteEnum::LOGIN_PROCESS->value => 'App\Controllers\login_process',
+    RouteEnum::LOGOUT->value => 'App\Controllers\logout',
+    RouteEnum::CHANGE_PASSWORD->value => 'App\Controllers\change_password_page',
+    RouteEnum::CHANGE_PASSWORD_PROCESS->value => 'App\Controllers\change_password_process',
+    RouteEnum::FORGOT_PASSWORD->value => 'App\Controllers\forgot_password_page',
+    RouteEnum::FORGOT_PASSWORD_PROCESS->value => 'App\Controllers\forgot_password_process',
+    RouteEnum::RESET_PASSWORD->value => 'App\Controllers\reset_password_page',
+    RouteEnum::RESET_PASSWORD_PROCESS->value => 'App\Controllers\reset_password_process',
+    RouteEnum::PROMOTIONS->value => 'App\Controllers\list_promotions',
+    RouteEnum::ADD_PROMOTION->value => 'App\Controllers\add_promotion_form',
+    RouteEnum::ADD_PROMOTION_PROCESS->value => 'App\Controllers\add_promotion_process',
+    RouteEnum::TOGGLE_PROMOTION_STATUS->value => 'App\Controllers\toggle_promotion_status',
+    RouteEnum::PROMOTION->value => 'App\Controllers\promotion_page',
+    RouteEnum::SEARCH_REFERENTIELS->value => 'App\Controllers\search_referentiels',
+    RouteEnum::REFERENTIELS->value => 'App\Controllers\list_referentiels',
+    RouteEnum::ALL_REFERENTIELS->value => 'App\Controllers\list_all_referentiels',
+    RouteEnum::ADD_REFERENTIEL->value => 'App\Controllers\add_referentiel_form',
+    RouteEnum::ADD_REFERENTIEL_PROCESS->value => 'App\Controllers\add_referentiel_process',
+    RouteEnum::ASSIGN_REFERENTIELS->value => 'App\Controllers\assign_referentiels_form',
+    RouteEnum::ASSIGN_REFERENTIELS_PROCESS->value => 'App\Controllers\assign_referentiels_process',
+    RouteEnum::UNASSIGN_REFERENTIEL->value => 'App\Controllers\unassign_referentiel_process',
+    RouteEnum::DASHBOARD->value => 'App\Controllers\dashboard',
+    RouteEnum::FORBIDDEN->value => 'App\Controllers\forbidden',
+    RouteEnum::NOT_FOUND->value => 'App\Controllers\not_found',
+    RouteEnum::APPRENANTS->value => 'App\Controllers\list_apprenants',
+    RouteEnum::ADD_APPRENANT->value => 'App\Controllers\add_apprenant_form',
+    RouteEnum::ADD_APPRENANT_PROCESS->value => 'App\Controllers\add_apprenant_process',
+    RouteEnum::EDIT_APPRENANT->value => 'App\Controllers\edit_apprenant_form',
+    RouteEnum::EDIT_APPRENANT_PROCESS->value => 'App\Controllers\edit_apprenant_process',
+    RouteEnum::DELETE_APPRENANT->value => 'App\Controllers\delete_apprenant_process',
+    RouteEnum::DOWNLOAD_LIST->value => 'App\Controllers\download_list',
+    RouteEnum::APPRENANT_DETAILS->value => 'App\Controllers\show_apprenant_details',
+    RouteEnum::EXCLUDE_APPRENANT->value => 'App\Controllers\exclude_apprenant',
+    RouteEnum::IMPORT_APPRENANTS->value => 'App\Controllers\import_apprenants_form',
+    RouteEnum::IMPORT_APPRENANTS_PROCESS->value => 'App\Controllers\import_apprenants_process',
+    RouteEnum::APPRENANT_PROFILE->value => 'App\Controllers\show_apprenant_profile',
+    RouteEnum::FILL_TEMPLATE->value => 'App\Controllers\fill_template_form',
+    RouteEnum::FILL_TEMPLATE_PROCESS->value => 'App\Controllers\fill_template_process',
 ];
 
-// Liste des pages qui ne nécessitent pas d'authentification
-$public_pages = ['login', 'login-process', 'forgot-password', 'forgot-password-process', 'reset-password', 'reset-password-process'];
+// Pages publiques
+$public_pages = [
+    RouteEnum::LOGIN->value,
+    RouteEnum::LOGIN_PROCESS->value,
+    RouteEnum::FORGOT_PASSWORD->value,
+    RouteEnum::FORGOT_PASSWORD_PROCESS->value,
+    RouteEnum::RESET_PASSWORD->value,
+    RouteEnum::RESET_PASSWORD_PROCESS->value
+];
 
 /**
  * Fonction principale de gestion des requêtes
@@ -86,19 +131,19 @@ function handle_request() {
     $session_services['start_session']();
     
     // Récupération de la page demandée
-    $page = isset($_GET['page']) ? $_GET['page'] : 'login';
+    $page = $_GET['page'] ?? RouteEnum::LOGIN->value;
     
     error_log("Page demandée : $page, Utilisateur connecté : " . ($session_services['is_logged_in']() ? 'Oui' : 'Non'));
     
     // Si l'utilisateur est connecté et qu'il essaie d'accéder à la page de connexion, rediriger vers le dashboard
     if ($session_services['is_logged_in']() && in_array($page, $public_pages)) {
-        header('Location: ?page=dashboard');
+        header('Location: ?page=' . RouteEnum::DASHBOARD->value);
         exit;
     }
     
     // Vérifier si la page nécessite une authentification
     if (!$session_services['is_logged_in']() && !in_array($page, $public_pages)) {
-        header('Location: ?page=login');
+        header('Location: ?page=' . RouteEnum::LOGIN->value);
         exit;
     }
     
@@ -119,7 +164,7 @@ function route($page) {
     $route_exists = array_key_exists($page, $routes);
     
     // Obtient la fonction à exécuter
-    $controller_function = $route_exists ? $routes[$page] : $routes['404'];
+    $controller_function = $route_exists ? $routes[$page] : $routes[RouteEnum::NOT_FOUND->value];
     
     // Exécute le contrôleur
     if (is_callable($controller_function)) {
@@ -127,5 +172,5 @@ function route($page) {
     }
     
     // Si la route n'existe pas, redirige vers la page 404
-    return call_user_func($routes['404']);
+    return call_user_func($routes[RouteEnum::NOT_FOUND->value]);
 }
